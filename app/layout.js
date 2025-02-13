@@ -3,7 +3,7 @@ import "./globals.css";
 
 const sigmarOne = localFont({
   src: '../assets/fonts/SigmarOne-Regular.ttf',
-  variable: '--font-singmarone',
+  variable: '--font-sigmarone',
   display: 'swap'
 });
 

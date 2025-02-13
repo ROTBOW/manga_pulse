@@ -1,4 +1,6 @@
 import Image from 'next/image';
+import Link from 'next/link';
+
 import profileIcon from '@/public/icons/account_circle.svg';
 import menuButton from '@/public/icons/menu.svg';
 
@@ -14,14 +16,15 @@ const Navbar = () => {
                         className='w-11'
                     />
                 </div>
-                <h1 className='font-bold text-2xl'>MangaPulse</h1>
+                <Link href='/'><h1 className='font-bold text-2xl'>MangaPulse</h1></Link>
+                
             </div>
     
             <div className='flex items-center'>
                 <input
                     placeholder="search"
                     type='text'
-                    className="bg-gray-700 rounded-xl p-1 mr-2 h-1/2"
+                    className="bg-gray-700 rounded-xl p-1 mr-2 h-1/2 text-sm"
                 />
 
                 <div className='rounded-full bg-gray-700'>
