@@ -2,6 +2,7 @@ import Image from "next/image";
 import Navbar from "@/components/navbar/navbar";
 
 import { getPopTitles } from "@/utils/getReq";
+import { getCoverUrl } from "@/utils/mangaManipulation";
 
 
 
@@ -16,7 +17,7 @@ const Home = async () => {
         popTitles.length != 0 ?
           <div>
             {popTitles[0].attributes.title.en}
-            <Image src={`https://mangadex.org/covers/${popTitles[0].id}/${popTitles[0].relationships[3].attributes.fileName}`} width="100" height="100" alt='managa cover'/>
+            <Image src={getCoverUrl(popTitles[0])} width="100" height="100" alt='manga cover'/>
           </div>
         :
         <div>no data</div> // to be replaced with a loading component

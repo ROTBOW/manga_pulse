@@ -2,6 +2,7 @@
 
 
 // get top 10 popular titles over the last month
+// TO DO - ADD ERROR HANDLING FOR A BAD REQUEST
 export const getPopTitles = async () => {
     const lastMonth = new Date();
     lastMonth.setHours(0, 0, 0, 0);
