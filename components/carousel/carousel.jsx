@@ -61,12 +61,12 @@ const Carousel = ({mangas}) => {
                 }    
             </ol>
             <h1 className="font-sigmarOne -mt-14 text-2xl z-10 bg-gray-800 rounded-t px-2">Up and Coming</h1>
-            <article className="w-3/6 p-2  bg-gray-800 z-10 rounded-xl flex flex-col">
+            <article className="w-3/6 h-40 p-2  bg-gray-800 z-10 rounded-xl flex flex-col">
                 <div className="flex justify-between mb-1 border-b border-rose-500">
                     <Link href={`/manga/${mangas[curPage].id}`} className="flex items-center" style={{width: "84%", height: "3rem"}}><h3 className="font-sigmarOne text-rose-500 text-ellipsis" title={getENTitle(mangas[curPage])}>{getENTitle(mangas[curPage])}</h3></Link>
                     <Link href={`/manga/${mangas[curPage].id}`} className="font-robotoCondensed w-30 h-8 text-center underline p-1 hover:text-rose-500">Go To Manga</Link>
                 </div>
-                <section className="font-robotoCondensed">{getDesc(mangas[curPage])}</section>
+                <section className="font-robotoCondensed overflow-y-auto">{getDesc(mangas[curPage])}</section>
             </article>
         </>
     );
