@@ -22,3 +22,14 @@ export const getCoverUrl = (mangaData) => {
 
     return `https://mangadex.org/covers/${mangaData.id}/${coverFileName}`;
 }
+
+
+// get the en title for a manga
+export const getENTitle = (mangaData) => {
+    return mangaData.attributes.title.en;
+}
+
+// get the Desc for a manga
+export const getDesc = (mangaData) => {
+    return mangaData.attributes.description.en;
+}
