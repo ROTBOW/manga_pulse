@@ -17,7 +17,7 @@ const Carousel = ({mangas}) => {
             pages.push(
             <li
                 key={idx}
-                className={`mx-1 h-fill transition-all hover:animate-pulse hover:scale-105 hover:opacity-100 ${ idx === curPage ? '!opacity-100 animate-pulse scale-105' : 'opacity-30'}`}
+                className={`mx-1 h-fill transition-all hover:animate-pulse hover:scale-105 hover:opacity-100 hover:cursor-pointer ${ idx === curPage ? '!opacity-100 animate-pulse scale-105' : 'opacity-30'}`}
                 onClick={(e) => {setCurPage((idx))}}
             >
                 <Image

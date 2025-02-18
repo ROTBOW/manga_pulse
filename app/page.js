@@ -17,14 +17,11 @@ const Home = async () => {
       {
         popTitles.length != 0 ?
           <Carousel mangas={popTitles}/>
-          // <div>
-          //   {popTitles[0].attributes.title.en}
-          //   <Image src={getCoverUrl(popTitles[0])} width="400" height="100" alt='manga cover'/>
-          // </div>
         :
         <div>no data</div> // to be replaced with a loading component
       }
 
+      <div style={{height: "800px"}}></div>
     </div>
   );
 }
