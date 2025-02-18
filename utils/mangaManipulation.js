@@ -31,5 +31,11 @@ export const getENTitle = (mangaData) => {
 
 // get the Desc for a manga
 export const getDesc = (mangaData) => {
-    return mangaData.attributes.description.en;
+    const text = mangaData.attributes.description.en;
+    
+    if (typeof(text) !== 'string') {
+        return 'No Desc - Letter do something!'
+    }
+
+    return text;
 }
