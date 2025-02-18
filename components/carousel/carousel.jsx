@@ -1,14 +1,28 @@
 'use client'
 import Image from "next/image";
 import { getCoverUrl, getDesc, getENTitle } from "@/utils/mangaManipulation";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from "next/link";
 
 
 const Carousel = ({mangas}) => {
     let [curPage, setCurPage] = useState(0);
 
-    // add a setinterval to move the idx along every 40 to 60 secs or so?
+    useEffect(() => {
+        const inter = setInterval(() => {
+            setCurPage(idx => {
+                if (mangas.length > idx + 1) {
+                    return idx + 1
+                } else {
+                    return 0
+                }
+            })
+        }, 10000);
+
+        return () => {
+            clearInterval(inter);
+        }
+    }, [curPage])
     
     const genPages = () => {
         let pages = [];
