@@ -13,7 +13,8 @@ export default {
         foreground: "var(--foreground)",
       },
       fontFamily: {
-        sigmarOne: ['var(--font-sigmarone)']
+        sigmarOne: ['var(--font-sigmarone)'],
+        robotoCondensed: ['var(--font-robotocondensed)']
       }
     },
   },
