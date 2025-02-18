@@ -18,7 +18,7 @@ export const getMangaChapters = async () => {
 };
 
 // get top 10 popular titles over the last month
-// TO DO - ADD ERROR HANDLING FOR A BAD REQUEST
+//// TO DO - ADD ERROR HANDLING FOR A BAD REQUEST
 export const getPopTitles = async () => {
     const lastMonth = new Date();
     lastMonth.setHours(0, 0, 0, 0);
@@ -29,7 +29,21 @@ export const getPopTitles = async () => {
     
     let res = await fetch(`https://api.mangadex.org/manga?includes[]=cover_art&includes[]=artist&includes[]=author&order[followedCount]=desc&contentRating[]=safe&contentRating[]=suggestive&hasAvailableChapters=true&createdAtSince=${encodeURIComponent(midnightISO)}`)
     let data = await res.json()
-    console.log(data.data);
+    
     return data.data
 
+}
+
+
+// get 64 latest chapters
+//// TO DO - MAKE THIS REACT TO A USERS DESIRE FOR FLESH (ie if they wanna see 18+ content)
+export const getLatestChapters = async () => {
+    let res = await fetch('https://api.mangadex.org/chapter?includes[]=scanlation_group&translatedLanguage[]=en&contentRating[]=safe&contentRating[]=suggestive&order[readableAt]=desc&limit=64');
+    if (res.status !== 200) {
+        throw "Bad request for chapters"
+    }
+
+    let data = await res.json();
+    console.log(data.data);
+    return data.data
 }

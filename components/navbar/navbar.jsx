@@ -30,7 +30,7 @@ const Navbar = () => {
 
     return (
         <>
-        <div className={`w-screen z-20 h-16 fixed top-0 ${showBg ? 'bg-gray-800 border-b border-rose-500' : ''}`}/>
+        <div className={`w-screen z-20 h-16 fixed top-0 pointer-events-none ${showBg ? 'bg-gray-800 border-b border-rose-500' : ''}`}/>
         <header className="fixed top-2 flex justify-between w-2/3 font-sigmarOne z-50">
             <div className='flex items-center'>
                 <div className='rounded-md bg-gray-700 mr-1'>
