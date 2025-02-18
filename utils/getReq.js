@@ -1,3 +1,6 @@
+import { getCoverUrl, getENTitle, getMangaUID } from "./mangaManipulation";
+
+
 // get manga by UID - also gets all addition data
 export const getManga = async (UID) => {
     let res = await fetch(`https://api.mangadex.org/manga/${UID}?includes%5B%5D=manga&includes%5B%5D=cover_art&includes%5B%5D=tag`)
@@ -35,15 +38,41 @@ export const getPopTitles = async () => {
 }
 
 
-// get 64 latest chapters
-//// TO DO - MAKE THIS REACT TO A USERS DESIRE FOR FLESH (ie if they wanna see 18+ content)
+// get 20 latest chapters with their cover art and titles
+/// Will def need to be optimized in the future but this is the path of least resistance rn
+/// This is def not best practice, and I can't do it again, but my God it was painful to get it working and I'm not touching it.
+//// TO DO - MAKE THIS REACT TO A USER'S DESIRE FOR FLESH (ie if they wanna see 18+ content or not)
 export const getLatestChapters = async () => {
-    let res = await fetch('https://api.mangadex.org/chapter?includes[]=scanlation_group&translatedLanguage[]=en&contentRating[]=safe&contentRating[]=suggestive&order[readableAt]=desc&limit=64');
+    let res = await fetch('https://api.mangadex.org/chapter?includes[]=scanlation_group&translatedLanguage[]=en&contentRating[]=safe&contentRating[]=suggestive&order[readableAt]=desc&limit=20');
     if (res.status !== 200) {
         throw "Bad request for chapters"
     }
 
     let data = await res.json();
-    console.log(data.data);
-    return data.data
+    data = data.data;
+    let url = 'https://api.mangadex.org/manga?limit=100&contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica&contentRating[]=pornographic&includes[]=cover_art';
+
+    for (let i = 0; i < data.length; i++) {
+        let mangaUID = getMangaUID(data[i])
+        url += `&ids[]=${mangaUID}`;
+        
+    }
+
+    let res2 = await fetch(url);
+    let eData = await res2.json();
+    
+    let extraData = {}; // I wish I could use dict comp here ;-;
+    for (let i = 0; i < eData.data.length; i++) {
+        extraData[eData.data[i].id] = eData.data[i];
+    }
+
+    for (let i = 0; i < data.length; i++) {
+        let slice = data[i];
+        slice.title = getENTitle(extraData[getMangaUID(slice)]);
+        slice.cover_art = getCoverUrl(extraData[getMangaUID(slice)]);
+    };
+
+
+    console.log(data);
+    return data
 }

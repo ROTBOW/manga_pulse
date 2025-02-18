@@ -5,7 +5,7 @@ const LateChapItem = ({chapter}) => {
 
     return (
         <li>
-            woah its an item!
+            {chapter.title}
         </li>
     )
 }
@@ -19,11 +19,10 @@ const LatestChapters = ({ chapters }) => {
         let olItems = [];
         for (let idx = x; idx <= y; idx++) {
             olItems.push(
-                <li
+                <LateChapItem
                     key={idx}
-                >
-                    {chapters[idx].id}
-                </li>
+                    chapter={chapters[idx]}
+                />
             )
         }
         return olItems;

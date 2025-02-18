@@ -16,12 +16,9 @@ const Home = async () => {
     <div className="flex flex-col items-center">
       <Navbar/>
 
-      {
-        popTitles.length != 0 ?
-          <Carousel mangas={popTitles}/>
-        :
-        <div>no data</div> // to be replaced with a loading component
-      }
+      <Suspense>
+        <Carousel mangas={popTitles}/>
+      </Suspense>
 
       <Suspense>
         <LatestChapters chapters={latestChaps}/>

@@ -24,7 +24,7 @@ const NotFoundPage = () => {
                     alt="Error img"
                     className="w-1/2 rounded-xl"
                 />
-                <h3 className="mt-3 font-robotoCondensed text-3xl">Not Found :(</h3>
+                <h3 className="mt-3 font-robotoCondensed text-3xl">404 - Not Found :(</h3>
             </main>
         </div>
     )

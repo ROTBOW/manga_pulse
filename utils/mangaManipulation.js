@@ -1,5 +1,21 @@
 
 
+/* -- Chapter functions -- */
+
+// get mangaUID return -1 if it doesn't exist
+/// this is for chapter idk if it will need its own file yet
+export const getMangaUID = (chapterData) => {
+    
+    for (let i = 0; i < chapterData.relationships.length; i++) {
+        if (chapterData.relationships[i].type == 'manga') {
+            return chapterData.relationships[i].id;
+        }
+    }
+
+    return -1
+};
+
+/* -- Manga functions -- */
 
 // get cover art return -1 if it doesn't exist
 const getCoverFileName = (mangaData) => {
@@ -34,7 +50,7 @@ export const getDesc = (mangaData) => {
     const text = mangaData.attributes.description.en;
     
     if (typeof(text) !== 'string') {
-        return 'No Desc - Letter do something!'
+        return 'No Desc! - Letter do something!'
     }
 
     return text;
