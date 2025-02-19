@@ -53,7 +53,7 @@ export const getDevRec = async () => {
     let res = await fetch(url);
     let data = await res.json();
     data = data.data;
-    console.log(data);
+    
     return data
 }
 
@@ -63,18 +63,27 @@ export const getDevRec = async () => {
 /// This is def not best practice, and I can't do it again, but my God it was painful to get it working and I'm not touching it.
 //// TO DO - MAKE THIS REACT TO A USER'S DESIRE FOR FLESH (ie if they wanna see 18+ content or not)
 export const getLatestChapters = async () => {
-    let res = await fetch('https://api.mangadex.org/chapter?includes[]=scanlation_group&translatedLanguage[]=en&contentRating[]=safe&contentRating[]=suggestive&order[readableAt]=desc&limit=20');
+    let res = await fetch('https://api.mangadex.org/chapter?includes[]=scanlation_group&translatedLanguage[]=en&contentRating[]=safe&contentRating[]=suggestive&order[readableAt]=desc&limit=100');
     if (res.status !== 200) {
         throw "Bad request for chapters"
     }
 
     let data = await res.json();
     data = data.data;
+    let uids = new Set();
+    let forwardData = [];
     let url = 'https://api.mangadex.org/manga?limit=100&contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica&contentRating[]=pornographic&includes[]=cover_art';
 
     for (let i = 0; i < data.length; i++) {
         let mangaUID = getMangaUID(data[i])
-        url += `&ids[]=${mangaUID}`;
+        if (uids.size >= 20) {
+            break
+        } else if (!uids.has(mangaUID)) {
+            url += `&ids[]=${mangaUID}`;
+            uids.add(mangaUID);
+            forwardData.push(data[i]);
+        }
+
         
     }
 
@@ -85,13 +94,13 @@ export const getLatestChapters = async () => {
     for (let i = 0; i < eData.data.length; i++) {
         extraData[eData.data[i].id] = eData.data[i];
     }
-
-    for (let i = 0; i < data.length; i++) {
-        let slice = data[i];
+    
+    for (let i = 0; i < forwardData.length; i++) {
+        let slice = forwardData[i];
         slice.title = getENTitle(extraData[getMangaUID(slice)]);
         slice.cover_art = getCoverUrl(extraData[getMangaUID(slice)]);
     };
 
 
-    return data
+    return forwardData;
 }

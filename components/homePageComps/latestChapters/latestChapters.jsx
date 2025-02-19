@@ -53,11 +53,11 @@ const LatestChapters = ({ chapters }) => {
         return olItems;
     }
 
-    const olClass = 'bg-gray-800 p-2 mx-2 rounded-md w-80';
+    const olClass = 'bg-gray-800 p-2 mx-2 rounded-md w-1/3';
     return (
-        <div className="flex flex-col items-center mt-14">
+        <div className="flex flex-col items-center mt-14 w-4/5">
             <h2 className="w-full font-sigmarOne text-rose-500 text-xl">Latest Chapters</h2>
-            <section className="mt-2 flex w-4/5 justify-center">
+            <section className="mt-2 w-full flex justify-between">
                 <ol className={`${olClass}`}>
                     {
                         getXtoYChapters(0, 5)
