@@ -17,9 +17,8 @@ const Home = async () => {
     <div className="flex flex-col items-center">
       <Navbar/>
 
-      <Suspense>
-        <Carousel mangas={popTitles}/>
-      </Suspense>
+      
+      <Carousel mangas={popTitles}/>
 
       <Suspense>
         <LatestChapters chapters={latestChaps}/>

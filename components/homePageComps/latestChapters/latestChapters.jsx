@@ -7,7 +7,7 @@ const LateChapItem = ({chapter}) => {
 
     return (
         <li className="flex p-1 h-20 w-full mb-2 font-robotoCondensed items-center">
-            <Link href="#" className="w-14 h-20 mr-2">
+            <Link href="#" className="w-14 h-20 mr-2 bg-rose-700 rounded">
                 <Image 
                     src={chapter.cover_art} 
                     width="56" 

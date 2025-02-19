@@ -33,7 +33,8 @@ const Carousel = ({mangas}) => {
             tiles.push(
             <li
                 key={idx}
-                className={`mx-1 h-fill transition-all hover:animate-pulse hover:scale-105 hover:opacity-100 hover:cursor-pointer ${ idx === curPage ? '!opacity-100 animate-pulse scale-105' : 'opacity-30'}`}
+                className={`bg-rose-700 mx-1 transition-all hover:animate-pulse hover:scale-105 hover:opacity-100 hover:cursor-pointer ${ idx === curPage ? '!opacity-100 animate-pulse scale-105' : 'opacity-30'}`}
+                style={{width: '10%', height: '15rem'}}
                 onClick={(e) => {setCurPage((idx))}}
             >
                 <Image
@@ -41,7 +42,7 @@ const Carousel = ({mangas}) => {
                     width={720}
                     height={1280}
                     alt="manga cover"
-                    className="w-auto h-full"
+                    className="w-full h-full"
                     style={{objectFit: 'cover'}}
                 />
             </li>)
