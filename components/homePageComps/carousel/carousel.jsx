@@ -26,11 +26,11 @@ const Carousel = ({mangas}) => {
         }
     }, [curPage])
     
-    const genPages = () => {
-        let pages = [];
+    const genTiles = () => {
+        let tiles = [];
 
         for (let idx = 0; idx < mangas.length; idx++) {
-            pages.push(
+            tiles.push(
             <li
                 key={idx}
                 className={`mx-1 h-fill transition-all hover:animate-pulse hover:scale-105 hover:opacity-100 hover:cursor-pointer ${ idx === curPage ? '!opacity-100 animate-pulse scale-105' : 'opacity-30'}`}
@@ -44,22 +44,20 @@ const Carousel = ({mangas}) => {
                     className="w-auto h-full"
                     style={{objectFit: 'cover'}}
                 />
-                <div className="bg-black relative">Manga Title</div>
             </li>)
 
 
         }
 
-        return pages
+        return tiles
     }
 
     return (
         <>
-            {/* <div className="relative"><h2 className="fixed top-16 left-40">Up & Coming</h2></div> */}
             <ol className="w-full h-1/4 flex overflow-hidden">
                 
                 {
-                    genPages()
+                    genTiles()
                 }    
             </ol>
             <h1 className="font-sigmarOne -mt-14 text-2xl z-10 bg-gray-800 rounded-t px-2">Up and Coming</h1>
