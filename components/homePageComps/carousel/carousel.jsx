@@ -70,7 +70,7 @@ const Carousel = ({mangas}) => {
                 {getDesc(mangas[curPage]) !== -1 ?
                 <section className="font-robotoCondensed overflow-y-auto">{getDesc(mangas[curPage])}</section> :
                 <section className="font-robotoCondensed overflow-y-hidden flex justify-between items-center text-xl" >
-                    Oh no! the description! Letter Get it!
+                    (no desc) Oh no! the description! Letter Get it!
                     <Image
                         src={noDesc}
                         alt="Letter trying her best"
