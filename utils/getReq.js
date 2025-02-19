@@ -10,7 +10,7 @@ export const getManga = async (UID) => {
         return -1
     }
     let data = await res.json();
-    console.log(data.data);
+    
     return data.data;
     
 }
@@ -35,6 +35,26 @@ export const getPopTitles = async () => {
     
     return data.data
 
+}
+
+
+// gets the dev's (me!) recommendations
+export const getDevRec = async () => {
+    let idRes = await fetch('https://api.mangadex.org/list/d23e31f6-4d5f-4650-8113-20e380b3e79d');
+    let idData = await idRes.json();
+    idData = idData.data
+
+    let url = 'https://api.mangadex.org/manga?limit=100&contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica&contentRating[]=pornographic&includes[]=cover_art';
+    for (let i = 0; i < idData.relationships.length; i++) {
+        let mangaUID = idData.relationships[i].id;
+        url += `&ids[]=${mangaUID}`;
+    }
+
+    let res = await fetch(url);
+    let data = await res.json();
+    data = data.data;
+    console.log(data);
+    return data
 }
 
 
@@ -73,6 +93,5 @@ export const getLatestChapters = async () => {
     };
 
 
-    console.log(data);
     return data
 }

@@ -16,8 +16,6 @@ const LateChapItem = ({chapter}) => {
                     className="w-full h-full object-cover object-center rounded"
                     style={{}}
                 />
-                {/* <div className="bg-gray-500 w-14 h-20 " style={{}}/> */}
-
             </Link>
             <div className="" style={{width: '14rem'}}>
             <Link href="#"><h4 className="truncate w-full" title={chapter.title}>{chapter.title}</h4></Link>
@@ -29,7 +27,9 @@ const LateChapItem = ({chapter}) => {
                 `}</p>
                 {/* need to add a link to the chapter directly from above */}
 
-                <div className="text-rose-500 text-sm truncate w-40 mt-3">SG: {getChapterScansGroup(chapter)}</div>
+                <div>
+                    <div className="text-rose-500 text-sm truncate w-40 mt-3">SG: {getChapterScansGroup(chapter)}</div>
+                </div>
             </div>
         </li>
     )
@@ -55,8 +55,8 @@ const LatestChapters = ({ chapters }) => {
 
     const olClass = 'bg-gray-800 p-2 mx-2 rounded-md w-80';
     return (
-        <div className="flex flex-col items-center">
-            <h2 className="mt-8 w-full font-sigmarOne text-rose-500 text-xl">Latest Chapters</h2>
+        <div className="flex flex-col items-center mt-14">
+            <h2 className="w-full font-sigmarOne text-rose-500 text-xl">Latest Chapters</h2>
             <section className="mt-2 flex w-4/5 justify-center">
                 <ol className={`${olClass}`}>
                     {
