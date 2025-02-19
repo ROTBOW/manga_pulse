@@ -4,6 +4,8 @@ import { getCoverUrl, getDesc, getENTitle } from "@/utils/mangaManipulation";
 import { useEffect, useState } from 'react';
 import Link from "next/link";
 
+import noDesc from '@/public/images/noDesc.png';
+
 
 const Carousel = ({mangas}) => {
     let [curPage, setCurPage] = useState(0);
@@ -66,7 +68,22 @@ const Carousel = ({mangas}) => {
                     <Link href={`/manga/${mangas[curPage].id}`} className="flex items-center" style={{width: "84%", height: "3rem"}}><h3 className="font-sigmarOne text-rose-500 truncate" title={getENTitle(mangas[curPage])}>{getENTitle(mangas[curPage])}</h3></Link>
                     <Link href={`/manga/${mangas[curPage].id}`} className="font-robotoCondensed w-30 h-8 text-center underline p-1 hover:text-rose-500">Go To Manga</Link>
                 </div>
-                <section className="font-robotoCondensed overflow-y-auto">{getDesc(mangas[curPage])}</section>
+
+                {getDesc(mangas[curPage]) !== -1 ?
+                <section className="font-robotoCondensed overflow-y-auto">{getDesc(mangas[curPage])}</section> :
+                <section className="font-robotoCondensed overflow-y-hidden flex justify-between items-center text-xl" >
+                    Oh no! the description! Letter Get it!
+                    <Image
+                        src={noDesc}
+                        alt="Letter trying her best"
+                        height="260"
+                        className="rounded-full object-scale-down"
+                        style={{imageRendering: "crisp-edges"}}
+                        />
+                </section>
+                }
+
+                {/* will need to update the desc box to accept markdown */}
             </article>
         </>
     );
