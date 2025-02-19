@@ -15,6 +15,17 @@ export const getMangaUID = (chapterData) => {
     return -1
 };
 
+// get scans group from chapter return -1 if it doesn't exist
+export const getChapterScansGroup = (chapterData) => {
+    for (let i = 0; i < chapterData.relationships.length; i++) {
+        if (chapterData.relationships[i].type == 'scanlation_group') {
+            return chapterData.relationships[i].attributes.name;
+        }
+    }
+
+    return 'No Group';
+};
+
 /* -- Manga functions -- */
 
 // get cover art return -1 if it doesn't exist
@@ -50,7 +61,7 @@ export const getDesc = (mangaData) => {
     const text = mangaData.attributes.description.en;
     
     if (typeof(text) !== 'string') {
-        return 'No Desc! - Letter do something!'
+        return -1
     }
 
     return text;
