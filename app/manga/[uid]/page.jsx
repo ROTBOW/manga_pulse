@@ -44,6 +44,12 @@ const Manga = async ({ params }) => {
         pornographic: 'bg-red-600 text-red-950'
     };
 
+    const pubStatusColor = {
+        ongoing: '',
+        hiatus: 'text-yellow-500',
+        completed: 'text-white uppercase',
+    }
+
     return (
         <div className="flex flex-col items-center h-full font-robotoCondensed">
             <Navbar/>
@@ -51,11 +57,11 @@ const Manga = async ({ params }) => {
             <main className='flex mt-28 w-4/5 h-1/3 justify-around'>
                 <div className="w-3/5 flex flex-col justify-center">
                     <h1 className="font-sigmarOne text-2xl text-rose-500">{getENTitle(manga)}</h1>
-                    <div className={`p-1 ${contentRateingColor[getContentRating(manga)]} w-fit rounded-md text-sm`}>{getContentRating(manga)}</div>
+                    <div className={`px-1 ${contentRateingColor[getContentRating(manga)]} w-fit rounded-md text-sm`}>{getContentRating(manga)}</div>
                     <ul className="flex h-fit w-14">{genTags()}</ul>
                     <p className="text-xl">{(getDesc(manga) !== -1) ? getDesc(manga) : 'No description given'}</p>
-                    <div className="mt-1 text-emerald-400 capitalize">{getPubYear(manga)} • {getPubState(manga)} • {getPubStatus(manga)}</div>
-                </div>
+                    <div className="mt-1 text-emerald-400 capitalize">{getPubYear(manga)} • {getPubState(manga)} • <i className={pubStatusColor[getPubStatus(manga)]}>{getPubStatus(manga)}</i></div>
+                </div> 
 
                 <Image
                     src={getCoverUrl(manga)}
