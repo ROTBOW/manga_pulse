@@ -29,6 +29,10 @@ const Home = async () => {
       </Suspense>
 
       <div style={{height: "100px"}}></div>
+
+      <footer className="mb-2 flex w-full justify-around font-robotoCondensed text-sm text-emerald-400">
+        <div>Create by Josiah L with the Mangadex API</div>
+      </footer>
     </div>
   );
 }
