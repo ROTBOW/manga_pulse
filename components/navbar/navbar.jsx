@@ -31,13 +31,13 @@ const Navbar = () => {
     return (
         <>
         <div className={`w-screen z-20 h-16 fixed top-0 pointer-events-none ${showBg ? 'bg-gray-800 border-b border-rose-500' : ''}`}/>
-        <header className="fixed top-2 flex justify-between w-2/3 font-sigmarOne z-50">
+        <header className="fixed top-2 flex justify-center sm:justify-between w-full sm:w-2/3 font-sigmarOne z-50">
             <div className='flex items-center'>
                 <div className='rounded-md bg-gray-700 mr-1'>
                     <Image
                         src={menuButton}
                         alt="button to open sidebar"
-                        className='w-11'
+                        className='w-10'
                     />
                 </div>
                 <Link href='/'><h1 className='font-bold bg-opacity-90 p-1 text-2xl text-rose-500 drop-shadow-xl'>MangaPulse</h1></Link>
@@ -48,7 +48,7 @@ const Navbar = () => {
                 <input
                     placeholder="search"
                     type='text'
-                    className="bg-gray-700 rounded-xl p-1 mr-2 h-1/2 text-sm opacity-0"
+                    className="bg-gray-700 rounded-xl p-1 mr-2 h-1/2 text-sm opacity-0 hidden sm:block"
                 />
                 {/* Need to show this again when I have search functionality */}
                 {/* ^ has opacity-0 class - need to remove that later */}
