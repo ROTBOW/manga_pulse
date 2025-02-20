@@ -60,25 +60,25 @@ const LatestChapters = ({ chapters }) => {
         <div className="flex flex-col items-center mt-14 w-4/5">
             <h2 className="w-full font-sigmarOne text-rose-500 text-2xl">Latest Chapters</h2>
             <section className="mt-2 w-full flex justify-center">
-                <ol className={olClass} style={olStyle}>
+                <ol className={`${olClass}`} style={olStyle}>
                     {
                         getXtoYChapters(0, 5)
                     }
                 </ol>
 
-                <ol className={olClass} style={olStyle}>
+                <ol className={`${olClass} hidden md:block`} style={olStyle}>
                     {
                         getXtoYChapters(6, 11)
                     }
                 </ol>
 
-                <ol className={olClass} style={olStyle}>
+                <ol className={`${olClass} hidden lg:block`} style={olStyle}>
                     {
                         getXtoYChapters(12, 17)
                     }
                 </ol>
                 
-                <ol className={olClass} style={olStyle}>
+                <ol className={`${olClass} hidden xl:block`} style={olStyle}>
                     {
                         getXtoYChapters(18, 23)
                     }
