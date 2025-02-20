@@ -1,4 +1,4 @@
-import { getCoverUrl, getDesc, getENTitle, getTags } from "@/utils/mangaManipulation";
+import { getCoverUrl, getDesc, getENTitle, getPubStatus, getPubState, getPubYear, getTags } from "@/utils/mangaManipulation";
 import { notFound } from "next/navigation";
 import { getManga } from "@/utils/getReq";
 
@@ -16,7 +16,8 @@ const Manga = async ({ params }) => {
         // got a bad request
         notFound();
     }
-
+    console.log(manga);
+    
     // get manga chapters separately here - we also don't even try unless we know its a real manga that exists
 
 
@@ -43,7 +44,8 @@ const Manga = async ({ params }) => {
                 <div className="w-3/5 flex flex-col justify-center">
                     <h1 className="font-sigmarOne text-2xl text-rose-500">{getENTitle(manga)}</h1>
                     <ul className="flex h-fit w-14">{genTags()}</ul>
-                    <p className="text-xl">{getDesc(manga)}</p>
+                    <p className="text-xl">{(getDesc(manga) !== -1) ? getDesc(manga) : 'No description given'}</p>
+                    <div className="mt-1 text-emerald-400 capitalize">{getPubYear(manga)} • {getPubState(manga)} • {getPubStatus(manga)}</div>
                 </div>
 
                 <Image

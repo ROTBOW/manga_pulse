@@ -88,6 +88,21 @@ export const getDesc = (mangaData) => {
     return text;
 }
 
+// get year manga was published
+export const getPubYear = (mangaData) => {
+    return mangaData.attributes.year;
+}
+
+// get pub status of manga
+export const getPubStatus = (mangaData) => {
+    return mangaData.attributes.status;
+}
+
+// get pub state of manga
+export const getPubState = (mangaData) => {
+    return mangaData.attributes.state;
+}
+
 // get tags for a manga - need a manga dataslice that has tags included
 export const getTags = (mangaData) => {
     let tags = [];
