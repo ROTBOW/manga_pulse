@@ -10,7 +10,7 @@ export const getManga = async (UID) => {
         return -1
     }
     let data = await res.json();
-    console.log(data.data);
+    
     return data.data;
 
 }
