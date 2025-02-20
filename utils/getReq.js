@@ -3,16 +3,16 @@ import { getCoverUrl, getENTitle, getMangaUID } from "./mangaManipulation";
 
 // get manga by UID - also gets all addition data
 export const getManga = async (UID) => {
-    let res = await fetch(`https://api.mangadex.org/manga/${UID}?includes%5B%5D=manga&includes%5B%5D=cover_art&includes%5B%5D=tag`)
+    let res = await fetch(`https://api.mangadex.org/manga/${UID}?includes%5B%5D=manga&includes%5B%5D=cover_art&includes%5B%5D=tag&includes%5B%5D=author&includes%5B%5D=artist`)
     if (res.status === 404) {
         console.log('BAD REQUEST MAD - getManga func');
         
         return -1
     }
     let data = await res.json();
-    
+    console.log(data.data);
     return data.data;
-    
+
 }
 
 // get manga's chapters by UID

@@ -1,3 +1,5 @@
+/* -- Misc functions -- */
+
 export const timeSince = (timestamp) => {
     const now = new Date();
     const past = new Date(timestamp);
@@ -84,4 +86,22 @@ export const getDesc = (mangaData) => {
     }
 
     return text;
+}
+
+// get tags for a manga - need a manga dataslice that has tags included
+export const getTags = (mangaData) => {
+    let tags = [];
+
+    
+    for (let i = 0; i < mangaData.attributes.tags.length; i++) {
+        let tag = mangaData.attributes.tags[i];
+        
+        tags.push({
+            id: tag.id,
+            name: tag.attributes.name.en,
+            group: tag.attributes.group
+        })
+    }
+
+    return tags;
 }
