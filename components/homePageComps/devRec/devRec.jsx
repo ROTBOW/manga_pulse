@@ -31,7 +31,7 @@ const DevRec = ({mangas}) => {
     }
     
     return (
-        <div className="mt-14 rounded p-1 font-robotoCondensed w-4/5 flex flex-col" style={{height: '25rem', minWidth: "37.5rem"}}>
+        <div className="mt-14 rounded p-1 font-robotoCondensed w-4/5 flex flex-col" style={{height: '26rem', minWidth: "22.5rem"}}>
             <h2 className="font-sigmarOne text-2xl text-rose-500"><i className="select-none" onClick={() => setShowLetter(state => !state)}>Letter's</i> recommended - {mangas.length} great choices!</h2>
             <Image src={peek} width={300} height={300} alt="Letter peeking!" className="absolute transition-all" style={{transform: `translateX(${(showLetter) ? '-170px' : '-25px'}) translateY(4.5rem)`}}/>
             <div className="overflow-x-auto w-full h-full p-1 bg-gray-800 rounded z-10">
