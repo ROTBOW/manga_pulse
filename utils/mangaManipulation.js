@@ -88,6 +88,11 @@ export const getDesc = (mangaData) => {
     return text;
 }
 
+// get content rating manga 
+export const getContentRating = (mangaData) => {
+    return mangaData.attributes.contentRating;
+}
+
 // get year manga was published
 export const getPubYear = (mangaData) => {
     return mangaData.attributes.year;
