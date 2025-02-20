@@ -58,7 +58,7 @@ export const getDevRec = async () => {
 }
 
 
-// get 20 latest chapters with their cover art and titles
+// get 30 latest chapters with their cover art and titles
 /// Will def need to be optimized in the future but this is the path of least resistance rn
 /// This is def not best practice, and I can't do it again, but my God it was painful to get it working and I'm not touching it.
 //// TO DO - MAKE THIS REACT TO A USER'S DESIRE FOR FLESH (ie if they wanna see 18+ content or not)
@@ -76,7 +76,7 @@ export const getLatestChapters = async () => {
 
     for (let i = 0; i < data.length; i++) {
         let mangaUID = getMangaUID(data[i])
-        if (uids.size >= 20) {
+        if (uids.size >= 30) {
             break
         } else if (!uids.has(mangaUID)) {
             url += `&ids[]=${mangaUID}`;

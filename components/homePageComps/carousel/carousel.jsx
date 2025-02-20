@@ -34,7 +34,7 @@ const Carousel = ({mangas}) => {
             <li
                 key={idx}
                 className={`bg-rose-700 mx-1 transition-all hover:animate-pulse hover:scale-105 hover:opacity-100 hover:cursor-pointer ${ idx === curPage ? '!opacity-100 animate-pulse scale-105' : 'opacity-30'}`}
-                style={{width: '10%', height: '15rem'}}
+                style={{width: '10%', height: '17rem'}}
                 onClick={(e) => {setCurPage((idx))}}
             >
                 <Image
@@ -69,7 +69,7 @@ const Carousel = ({mangas}) => {
                 </div>
 
                 {getDesc(mangas[curPage]) !== -1 ?
-                <section className="font-robotoCondensed overflow-y-auto">{getDesc(mangas[curPage])}</section> :
+                <section className="font-robotoCondensed overflow-y-auto p-1">{getDesc(mangas[curPage])}</section> :
                 <section className="font-robotoCondensed overflow-y-hidden flex justify-between items-center text-xl" >
                     (no desc) Oh no! the description! Letter Get it!
                     <Image

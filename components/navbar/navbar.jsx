@@ -48,8 +48,10 @@ const Navbar = () => {
                 <input
                     placeholder="search"
                     type='text'
-                    className="bg-gray-700 rounded-xl p-1 mr-2 h-1/2 text-sm"
+                    className="bg-gray-700 rounded-xl p-1 mr-2 h-1/2 text-sm opacity-0"
                 />
+                {/* Need to show this again when I have search functionality */}
+                {/* ^ has opacity-0 class - need to remove that later */}
 
                 <div className='rounded-full bg-gray-700'>
                     <Image

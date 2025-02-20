@@ -17,9 +17,9 @@ const LateChapItem = ({chapter}) => {
                     style={{}}
                 />
             </Link>
-            <div className="w-full">
-                <Link href="#"><h4 className="truncate w-4/5" title={chapter.title}>{chapter.title}</h4></Link>
-                <p className="text-sm truncate w-4/5">{
+            <div className="" style={{width: '78%'}}>
+                <Link href="#" className="w-full block"><h4 className="truncate w-full" title={chapter.title}>{chapter.title}</h4></Link>
+                <p className="text-sm truncate w-full text-emerald-400">{
                 `
                 ${chapter.attributes.volume ? "Vol. " + chapter.attributes.volume +' ' : ''}
                 ${chapter.attributes.chapter ? "Ch. " + chapter.attributes.chapter +' ' : ''}
@@ -54,12 +54,12 @@ const LatestChapters = ({ chapters }) => {
         return olItems;
     }
 
-    const olClass = 'bg-gray-800 p-2 mx-2 rounded-md w-1/3 inline';
-    const olStyle = {minWidth: '18.75rem'};
+    const olClass = 'bg-gray-800 p-2 mx-2 rounded-md w-1/3';
+    const olStyle = {minWidth: '18.75rem', maxWidth: "20rem"};
     return (
         <div className="flex flex-col items-center mt-14 w-4/5">
             <h2 className="w-full font-sigmarOne text-rose-500 text-2xl">Latest Chapters</h2>
-            <section className="mt-2 w-full flex justify-between">
+            <section className="mt-2 w-full flex justify-center">
                 <ol className={olClass} style={olStyle}>
                     {
                         getXtoYChapters(0, 5)
@@ -75,6 +75,12 @@ const LatestChapters = ({ chapters }) => {
                 <ol className={olClass} style={olStyle}>
                     {
                         getXtoYChapters(12, 17)
+                    }
+                </ol>
+                
+                <ol className={olClass} style={olStyle}>
+                    {
+                        getXtoYChapters(18, 23)
                     }
                 </ol>
 
