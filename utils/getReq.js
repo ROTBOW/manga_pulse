@@ -15,9 +15,12 @@ export const getManga = async (UID) => {
 
 }
 
-// get manga's chapters by UID
-export const getMangaChapters = async () => {
-
+// gets the vol and chapters of a manga by its UID
+export const getMangaChapters = async (UID) => {
+    let res = await fetch(`https://api.mangadex.org/manga/${UID}/feed?limit=100&contentRating%5B%5D=safe&contentRating%5B%5D=suggestive&contentRating%5B%5D=erotica&includeFutureUpdates=1&order%5BcreatedAt%5D=asc&order%5BupdatedAt%5D=asc&order%5BpublishAt%5D=asc&order%5BreadableAt%5D=asc&order%5Bvolume%5D=asc&order%5Bchapter%5D=asc&includes%5B%5D=scanlation_group`);
+    let data = await res.json()
+    
+    return data.data;
 };
 
 // get top 10 popular titles over the last month

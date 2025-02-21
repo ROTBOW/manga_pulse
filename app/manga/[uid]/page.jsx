@@ -1,10 +1,12 @@
-import { getCoverUrl, getDesc, getENTitle, getPubStatus, getPubState, getPubYear, getTags, getContentRating } from "@/utils/mangaManipulation";
+import { getCoverUrl, getDesc, getENTitle, getPubStatus, getPubState, getPubYear, getTags, getContentRating, getAuthor, getArtist, getDemographic, getAltTitles } from "@/utils/mangaManipulation";
+import { getManga, getMangaChapters } from "@/utils/getReq";
 import { notFound } from "next/navigation";
-import { getManga } from "@/utils/getReq";
+import { Suspense } from "react";
 
 import Navbar from "@/components/navbar/navbar";
 import Image from "next/image";
 import Link from "next/link";
+import ChapterList from "@/components/chapterList/chapterList";
 
 
 const Manga = async ({ params }) => {
@@ -16,9 +18,10 @@ const Manga = async ({ params }) => {
         // got a bad request
         notFound();
     }
-    console.log(manga);
+    
     // add a check here for erotica and porno to have them valid they are of age and they wanna see that content
-
+    
+    const chapters = await getMangaChapters(UID);
     // get manga chapters separately here - we also don't even try unless we know its a real manga that exists
 
 
@@ -35,6 +38,24 @@ const Manga = async ({ params }) => {
         }
         
         return tags;
+    }
+
+    const genAltTitles = () => {
+        let titles = getAltTitles(manga);
+        let res = [];
+
+        for (let title of titles) {
+            let lang = Object.keys(title)[0];
+            let name = Object.values(title)[0];
+            
+            res.push(
+                <li key={res.length} className="border-b border-rose-500 text-md">
+                    <b className="uppercase">{lang}</b>: {name}
+                </li>
+            )
+        }
+
+        return res;
     }
 
     const contentRateingColor = {
@@ -59,7 +80,7 @@ const Manga = async ({ params }) => {
                     <h1 className="font-sigmarOne text-2xl text-rose-500">{getENTitle(manga)}</h1>
                     <div className={`px-1 ${contentRateingColor[getContentRating(manga)]} w-fit rounded-md text-sm`}>{getContentRating(manga)}</div>
                     <ul className="flex h-fit w-14">{genTags()}</ul>
-                    <p className="text-xl">{(getDesc(manga) !== -1) ? getDesc(manga) : 'No description given'}</p>
+                    <p className="text-xl">{(getDesc(manga) !== -1) ? getDesc(manga) : ''}</p>
                     <div className="mt-1 text-emerald-400 capitalize">{getPubYear(manga)} • {getPubState(manga)} • <i className={pubStatusColor[getPubStatus(manga)]}>{getPubStatus(manga)}</i></div>
                 </div> 
 
@@ -72,9 +93,37 @@ const Manga = async ({ params }) => {
                 />
             </main>
 
-            <section className="w-full flex justify-center mt-14">
-                this will be chapters
-            </section>
+            <secondary className="flex w-4/5 justify-center mt-14">
+                <Suspense>
+                    <ChapterList chapters={chapters}/>
+                </Suspense>
+
+                <section className="w-2/5 mr-10">
+                    <div className="flex w-full mb-8">
+                        <h3 className="mr-5">
+                            Author<br/>
+                            <p className="px-1 w-fit text-rose-500 rounded bg-gray-800 text-center mt-1">{getAuthor(manga)}</p>
+                        </h3>
+                        <h3 className="mr-10">
+                            Artist<br/>
+                            <p className="px-1 w-fit text-rose-500 rounded bg-gray-800 text-center mt-1">{getArtist(manga)}</p>
+                        </h3>
+
+
+                        <h2>
+                            Demographic<br/>
+                            <p className="px-1 w-fit text-rose-500 rounded bg-gray-800 text-center mt-1">{getDemographic(manga)}</p>
+                        </h2>
+                    </div>
+
+                    <div>
+                        <h2 className="underline text-md">Alt Titles</h2>
+                        <ol>
+                            {genAltTitles()}
+                        </ol>
+                    </div>
+                </section>
+            </secondary>
         </div>
     )
 };
