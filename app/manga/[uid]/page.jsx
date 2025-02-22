@@ -1,4 +1,4 @@
-import { getCoverUrl, getDesc, getENTitle, getPubStatus, getPubState, getPubYear, getTags, getContentRating, getAuthor, getArtist, getDemographic, getAltTitles } from "@/utils/mangaManipulation";
+import { getCoverUrl, getDesc, getENTitle, getPubStatus, getPubState, getPubYear, getTags, getContentRating, getAuthor, getArtist, getDemographic, getAltTitles } from "@/utils/dataManipulation";
 import { getManga, getMangaChapters } from "@/utils/getReq";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -109,8 +109,7 @@ const Manga = async ({ params }) => {
                             <p className="px-1 w-fit text-rose-500 rounded bg-gray-800 text-center mt-1">{getArtist(manga)}</p>
                         </h3>
 
-
-                        <h2>
+                        <h2 className={`${getDemographic(manga) !== null ? '' : 'opacity-0'}`}>
                             Demographic<br/>
                             <p className="px-1 w-fit text-rose-500 rounded bg-gray-800 text-center mt-1">{getDemographic(manga)}</p>
                         </h2>

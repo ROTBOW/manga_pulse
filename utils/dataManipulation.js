@@ -52,6 +52,11 @@ export const getChapterNumber = (chapterData) => {
     return chapterData.attributes.chapter;
 }
 
+// get chapter translated lang
+export const getChapterLang = (chapterData) => {
+    return chapterData.attributes.translatedLanguage;
+}
+
 
 
 /* -- Manga functions -- */

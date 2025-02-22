@@ -1,4 +1,4 @@
-import { getCoverUrl, getENTitle, getMangaUID } from "./mangaManipulation";
+import { getCoverUrl, getENTitle, getMangaUID } from "./dataManipulation";
 
 
 // get manga by UID - also gets all addition data
