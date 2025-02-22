@@ -3,10 +3,12 @@ import { getManga, getMangaChapters } from "@/utils/getReq";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
+import ChapterList from "@/components/chapterList/chapterList";
 import Navbar from "@/components/navbar/navbar";
+import Flag from 'react-world-flags';
 import Image from "next/image";
 import Link from "next/link";
-import ChapterList from "@/components/chapterList/chapterList";
+import langToCountry from "@/utils/langToCountry";
 
 
 const Manga = async ({ params }) => {
@@ -49,8 +51,8 @@ const Manga = async ({ params }) => {
             let name = Object.values(title)[0];
             
             res.push(
-                <li key={res.length} className="border-b border-rose-500 text-md">
-                    <b className="uppercase">{lang}</b>: {name}
+                <li key={res.length} className="border-b border-rose-500 text-md flex items-center">
+                    <Flag code={langToCountry[lang]} title={lang.toLocaleUpperCase()} className="w-5 h-4 object-cover rounded-md mr-1" /> • {name}
                 </li>
             )
         }
