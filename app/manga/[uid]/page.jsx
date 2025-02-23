@@ -1,8 +1,7 @@
-'use client'
 import { getCoverUrl, getDesc, getENTitle, getPubStatus, getPubState, getPubYear, getTags, getContentRating, getAuthor, getArtist, getDemographic, getAltTitles } from "@/utils/dataManipulation";
 import { getManga, getMangaChapters } from "@/utils/getReq";
 import { notFound } from "next/navigation";
-import { Suspense, useState } from "react";
+import { Suspense } from "react";
 
 import ChapterList from "@/components/chapterList/chapterList";
 import langToCountry from "@/utils/langToCountry";
@@ -98,7 +97,7 @@ const Manga = async ({ params }) => {
 
             <div className="flex w-4/5 justify-center mt-14">
                 <div>
-                    buttons
+                    <button className="px-1 bg-gray-800 rounded">Asc</button>
                 </div>
                 <Suspense>
                     <ChapterList chapters={chapters}/>

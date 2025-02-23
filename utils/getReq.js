@@ -70,7 +70,7 @@ export const getPopTitles = async () => {
 
 // gets the dev's (me!) recommendations
 export const getDevRec = async () => {
-    let idRes = await limitedFetch('https://api.mangadex.org/list/d23e31f6-4d5f-4650-8113-20e380b3e79d');
+    let idRes = await limitedFetch('https://api.mangadex.org/list/d23e31f6-4d5f-4650-8113-20e380b3e79d', 3600);
     let idData = await idRes.json();
     idData = idData.data
 
