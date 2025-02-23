@@ -1,7 +1,9 @@
 const langToCountry = {
     'en': 'us',  // English - United States
     'es': 'es',  // Spanish - Spain
+    'es-la': 'es',  // Spanish - Spain
     'zh': 'cn',  // Chinese - China
+    'zh-hk': 'cn',  // Chinese (Hong Kong) - China
     'hi': 'in',  // Hindi - India
     'ar': 'sa',  // Arabic - Saudi Arabia
     'fr': 'fr',  // French - France
