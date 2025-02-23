@@ -1,3 +1,5 @@
+/* -- Misc functions -- */
+
 export const timeSince = (timestamp) => {
     const now = new Date();
     const past = new Date(timestamp);
@@ -45,6 +47,18 @@ export const getChapterScansGroup = (chapterData) => {
     return 'No Group';
 };
 
+// get chapter number
+export const getChapterNumber = (chapterData) => {
+    return chapterData.attributes.chapter;
+}
+
+// get chapter translated lang
+export const getChapterLang = (chapterData) => {
+    return chapterData.attributes.translatedLanguage;
+}
+
+
+
 /* -- Manga functions -- */
 
 // get cover art return -1 if it doesn't exist
@@ -84,4 +98,74 @@ export const getDesc = (mangaData) => {
     }
 
     return text;
+}
+
+// get content rating manga 
+export const getContentRating = (mangaData) => {
+    return mangaData.attributes.contentRating;
+}
+
+// get year manga was published
+export const getPubYear = (mangaData) => {
+    return mangaData.attributes.year;
+}
+
+// get pub status of manga
+export const getPubStatus = (mangaData) => {
+    return mangaData.attributes.status;
+}
+
+// get pub state of manga
+export const getPubState = (mangaData) => {
+    return mangaData.attributes.state;
+}
+
+// get target demographic of manga
+export const getDemographic = (mangaData) => {
+    return mangaData.attributes.publicationDemographic;
+}
+
+// get Author of manga - needs a manga dataslice that has the author included
+export const getAuthor = (mangaData) => {
+    for (let i = 0; i < mangaData.relationships.length; i++) {
+        if (mangaData.relationships[i].type == 'author') {
+            return mangaData.relationships[i].attributes.name;
+        }
+    }
+
+    return -1
+}
+
+// get Artist of manga - needs a manga dataslice that has the artist included
+export const getArtist = (mangaData) => {
+    for (let i = 0; i < mangaData.relationships.length; i++) {
+        if (mangaData.relationships[i].type == 'artist') {
+            return mangaData.relationships[i].attributes.name;
+        }
+    }
+
+    return -1
+}
+
+// get alt titles for a manga
+export const getAltTitles = (mangaData) => {
+    return mangaData.attributes.altTitles;
+}
+
+// get tags for a manga - need a manga dataslice that has tags included
+export const getTags = (mangaData) => {
+    let tags = [];
+
+    
+    for (let i = 0; i < mangaData.attributes.tags.length; i++) {
+        let tag = mangaData.attributes.tags[i];
+        
+        tags.push({
+            id: tag.id,
+            name: tag.attributes.name.en,
+            group: tag.attributes.group
+        })
+    }
+
+    return tags;
 }

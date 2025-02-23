@@ -1,4 +1,4 @@
-import { getChapterScansGroup, timeSince } from "@/utils/mangaManipulation";
+import { getChapterScansGroup, timeSince } from "@/utils/dataManipulation";
 import Image from "next/image";
 import Link from "next/link";
 

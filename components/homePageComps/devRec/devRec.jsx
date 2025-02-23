@@ -1,5 +1,5 @@
 'use client'
-import { getCoverUrl } from "@/utils/mangaManipulation";
+import { getCoverUrl } from "@/utils/dataManipulation";
 import { useState } from 'react';
 
 import peek from "@/public/images/LetterPeek.png";

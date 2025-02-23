@@ -1,6 +1,6 @@
 'use client'
 import Image from "next/image";
-import { getCoverUrl, getDesc, getENTitle } from "@/utils/mangaManipulation";
+import { getCoverUrl, getDesc, getENTitle } from "@/utils/dataManipulation";
 import { useEffect, useState } from 'react';
 import Link from "next/link";
 
