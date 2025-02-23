@@ -8,9 +8,11 @@ const limiter = new Bottleneck({
 })
 
 // Function to fetch with rate limiting & retry on 429 (rate limit exceeded)
-const limitedFetch = async (url) => {
+const limitedFetch = async (url, revalidate=10) => {
     return limiter.schedule(async () => {
-        let res = await fetch(url);
+        let res = await fetch(url, {
+            next: {revalidate: revalidate}
+        });
 
         // Handle Rate Limit (429) and retry
         if (res.status === 429) {
