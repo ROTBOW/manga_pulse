@@ -1,5 +1,5 @@
 import { getCoverUrl, getDesc, getENTitle, getPubStatus, getPubState, getPubYear, getTags, getContentRating, getAuthor, getArtist, getDemographic, getAltTitles } from "@/utils/dataManipulation";
-import { getManga, getMangaChapters } from "@/utils/getReq";
+import { getManga } from "@/utils/getReq";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
@@ -22,9 +22,6 @@ const Manga = async ({ params }) => {
     }
     
     // add a check here for erotica and porno to have them valid they are of age and they wanna see that content
-    
-    const chapters = await getMangaChapters(UID);
-    // get manga chapters separately here - we also don't even try unless we know its a real manga that exists
 
 
     const genTags = () => {
@@ -71,6 +68,7 @@ const Manga = async ({ params }) => {
         ongoing: '',
         hiatus: 'text-yellow-500',
         completed: 'text-white uppercase',
+        cancelled: 'text-red-500 uppercase',
     }
 
     return (
@@ -96,12 +94,7 @@ const Manga = async ({ params }) => {
             </main>
 
             <div className="flex w-4/5 justify-center mt-14">
-                <div>
-                    <button className="px-1 bg-gray-800 rounded">Asc</button>
-                </div>
-                <Suspense>
-                    <ChapterList chapters={chapters}/>
-                </Suspense>
+                <ChapterList mangaUID={UID}/>
 
                 <section className="w-2/5 mr-10">
                     <div className="flex w-full mb-8">

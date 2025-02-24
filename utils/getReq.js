@@ -77,17 +77,14 @@ export const getManga = async (UID) => {
 }
 
 // gets the vol and chapters of a manga by its UID
-export const getMangaChapters = async (UID, order='asc') => {
+export const getMangaChapters = async (UID, order='desc') => {
     let url = `https://api.mangadex.org/manga/${UID}/feed?`;
-    let params = {
+    let params = { // going to also want to include cookie for user prefered lang
         limit: 100,
         'contentRating[]': ['safe', 'suggestive', 'erotica'], // need to make a func that checks the cookies if they set a rating they want/dont want to see
         includeFutureUpdates: 1,
         'includes[]': ['scanlation_group', 'user'],
         order: {
-            createdAt: 'asc',
-            updatedAt: 'asc',
-            readableAt: order,
             volume: order,
             chapter: order
         },

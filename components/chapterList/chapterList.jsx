@@ -1,11 +1,33 @@
+'use client'
 import { getChapterNumber, getChapterLang, getChapterScansGroup, timeSince } from "@/utils/dataManipulation";
+import { getMangaChapters } from "@/utils/getReq";
 import langToCountry from "@/utils/langToCountry";
+import { useState, useEffect } from 'react';
 import Flag from 'react-world-flags';
 
 
 
+const ChapterList = ({mangaUID}) => {
+    const [chapters, setChapters] = useState([]);
+    const [order, setOrder] = useState('desc')
 
-const ChapterList = ({chapters}) => {
+    useEffect(() => {
+        let getData = async () => {
+            setChapters(await getMangaChapters(mangaUID, order));
+        }
+
+        getData();
+    }, [order])
+
+    const toggleOrder = () => {
+        setOrder(ord => {
+            if (ord === 'asc') {
+                return 'desc'
+            } else {
+                return 'asc'
+            }
+        })
+    };
 
     const genChapters = () => {
         let chaps = [];
@@ -31,9 +53,15 @@ const ChapterList = ({chapters}) => {
     }
 
     return(
-        <ol className="w-3/5">
-            {genChapters()}
-        </ol>
+        <>
+            <div>
+                <button className="px-1 w-12 bg-gray-800 hover:bg-gray-600 rounded capitalize" onClick={()=>toggleOrder()}>{order}</button>
+            </div>
+
+            <ol className="w-3/5">
+                {genChapters()}  
+            </ol>
+        </>
     )
 };
 
