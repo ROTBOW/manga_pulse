@@ -47,6 +47,28 @@ export const getChapterScansGroup = (chapterData) => {
     return 'No Group';
 };
 
+// get uploader from chapter return -1 if it doesn't exist
+export const getChapterUploader = (chapterData) => {
+    for (let i = 0; i < chapterData.relationships.length; i++) {
+        if (chapterData.relationships[i].type == 'user') {
+            return chapterData.relationships[i].attributes.username;
+        }
+    }
+
+    return -1;
+};
+
+// get uploader ID from chapter return -1 if it doesn't exist
+export const getChapterUploaderUID = (chapterData) => {
+    for (let i = 0; i < chapterData.relationships.length; i++) {
+        if (chapterData.relationships[i].type == 'user') {
+            return chapterData.relationships[i].id;
+        }
+    }
+
+    return -1;
+};
+
 // get chapter number
 export const getChapterNumber = (chapterData) => {
     return chapterData.attributes.chapter;
