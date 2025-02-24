@@ -62,7 +62,7 @@ const ListVol = ({volume}) => {
                     width="50"
                     heigh="50"
                     onClick={() => setShowChaps(toggle => !toggle)}
-                    className={`transition-all ${showChaps ? '' : 'rotate-90'}`}
+                    className={`transition-all ${showChaps ? '' : 'rotate-90'} cursor-pointer`}
                 />
             </div>
             <ol
