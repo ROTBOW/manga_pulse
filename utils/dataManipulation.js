@@ -79,6 +79,11 @@ export const getChapterLang = (chapterData) => {
     return chapterData.attributes.translatedLanguage;
 }
 
+// get chapter title or null if it doesn't have one
+export const getChapterTitle = (chapterData) => {
+    return chapterData.attributes.title;
+}
+
 
 
 /* -- Manga functions -- */

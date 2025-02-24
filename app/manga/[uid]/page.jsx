@@ -2,7 +2,7 @@ import { getCoverUrl, getDesc, getENTitle, getPubStatus, getPubState, getPubYear
 import { getManga } from "@/utils/getReq";
 import { notFound } from "next/navigation";
 
-import ChapterList from "@/components/chapterList/chapterList";
+import ChapterList from "@/components/mangaPageComps/chapterList/chapterList";
 import langToCountry from "@/utils/langToCountry";
 import Navbar from "@/components/navbar/navbar";
 import Flag from 'react-world-flags';
