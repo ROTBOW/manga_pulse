@@ -1,7 +1,6 @@
 import { getCoverUrl, getDesc, getENTitle, getPubStatus, getPubState, getPubYear, getTags, getContentRating, getAuthor, getArtist, getDemographic, getAltTitles } from "@/utils/dataManipulation";
 import { getManga } from "@/utils/getReq";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 
 import ChapterList from "@/components/chapterList/chapterList";
 import langToCountry from "@/utils/langToCountry";
@@ -11,7 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 
-const Manga = async ({ params }) => {
+const MangaPage = async ({ params }) => {
     const UID = (await params).uid;
     const manga = await getManga(UID);
 
@@ -125,4 +124,4 @@ const Manga = async ({ params }) => {
     )
 };
 
-export default Manga;
+export default MangaPage;

@@ -70,6 +70,7 @@ const ChapterList = ({mangaUID}) => {
                 <button className="px-1 w-12 bg-gray-800 hover:bg-gray-600 rounded capitalize" onClick={()=>toggleOrder()}>{order}</button>
             </div>
 
+            {/* need to add loading circle while we wait for the chapters */}
             <ol className="w-3/5">
                 {genChapters()}  
             </ol>
