@@ -8,6 +8,7 @@ import Navbar from "@/components/navbar/navbar";
 import Flag from 'react-world-flags';
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 
 
 const MangaPage = async ({ params }) => {
@@ -93,7 +94,9 @@ const MangaPage = async ({ params }) => {
             </main>
 
             <div className="flex w-4/5 justify-center mt-14">
+                
                 <ChapterList mangaUID={UID}/>
+                
 
                 <section className="w-2/5 mr-10">
                     <div className="flex w-full mb-8">

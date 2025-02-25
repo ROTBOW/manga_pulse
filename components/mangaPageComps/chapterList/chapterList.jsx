@@ -3,6 +3,7 @@
 import { getMangaChapters } from "@/utils/getReq";
 import { useState, useEffect } from 'react';
 import ListVol from "../chapterListVol/chapterListVol";
+import LoadingSpinner from "@/components/loadingSpinner/loadingSpinner";
 
 
 
@@ -54,14 +55,13 @@ const ChapterList = ({mangaUID}) => {
         return volumes;
     }
 
-    if (chapters.length === 0) return <div>loading</div>
+    if (chapters.length === 0) return <div className="flex w-3/5 h-full items-center justify-center"><LoadingSpinner/></div>;
     return(
         <>
             <div>
                 <button className="px-1 w-12 bg-gray-800 hover:bg-gray-600 rounded capitalize" onClick={()=>toggleOrder()}>{order}</button>
             </div>
 
-            {/* need to add loading circle while we wait for the chapters */}
             <ol className="w-3/5">
                 {genVolumes()}  
             </ol>
