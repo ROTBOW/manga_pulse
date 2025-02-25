@@ -1,4 +1,4 @@
-import { getCoverUrl, getDesc, getENTitle, getPubStatus, getPubState, getPubYear, getTags, getContentRating, getAuthor, getArtist, getDemographic, getAltTitles } from "@/utils/dataManipulation";
+import { getCoverUrl, getDesc, getENTitle, getPubStatus, getPubState, getPubYear, getTags, getContentRating, getAuthor, getArtist, getDemographic, getAltTitles } from "@/utils/dataManipulation/manga";
 import { getManga } from "@/utils/getReq";
 import { notFound } from "next/navigation";
 
@@ -8,7 +8,6 @@ import Navbar from "@/components/navbar/navbar";
 import Flag from 'react-world-flags';
 import Image from "next/image";
 import Link from "next/link";
-import { Suspense } from "react";
 
 
 const MangaPage = async ({ params }) => {
@@ -22,6 +21,7 @@ const MangaPage = async ({ params }) => {
     }
     
     // add a check here for erotica and porno to have them valid they are of age and they wanna see that content
+    // gonna wait on this ^ since I want it to check the cookies/localstorage if they have saved settings
 
 
     const genTags = () => {
@@ -57,6 +57,8 @@ const MangaPage = async ({ params }) => {
         return res;
     }
 
+    // the two following objects are used to colorize the content rating and publication status
+    // based on what they are, respectively.
     const contentRateingColor = {
         safe: 'bg-emerald-500 text-emerald-900',
         suggestive: 'bg-amber-400 text-amber-900',

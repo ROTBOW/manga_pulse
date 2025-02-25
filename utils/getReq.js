@@ -1,4 +1,5 @@
-import { getCoverUrl, getENTitle, getMangaUID } from "./dataManipulation";
+import { getCoverUrl, getENTitle } from "./dataManipulation/manga";
+import { getMangaUID } from './dataManipulation/chapter';
 import Bottleneck from "bottleneck";
 
 // url param builter - should give easier control of the params in each url

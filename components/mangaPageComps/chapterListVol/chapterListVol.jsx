@@ -1,14 +1,15 @@
 'use client'
-import { useState } from "react";
-import { getChapterNumber, getChapterLang, getChapterScansGroup, timeSince, getChapterUploader, getChapterUploaderUID, getChapterTitle } from "@/utils/dataManipulation";
-import Link from "next/link";
-import Flag from 'react-world-flags';
-import Image from "next/image";
+import { getChapterNumber, getChapterLang, getChapterScansGroup, getChapterUploader, getChapterUploaderUID, getChapterTitle } from "@/utils/dataManipulation/chapter";
+import { timeSince } from '@/utils/dataManipulation/misc';
 import langToCountry from "@/utils/langToCountry";
+import Flag from 'react-world-flags';
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
+import dropdownArrow from '@/public/icons/dropdownArrow.svg';
 import userIcon from '@/public/icons/person.svg';
 import groupIcon from '@/public/icons/group.svg';
-import dropdownArrow from '@/public/icons/dropdownArrow.svg';
 
 
 const ListVol = ({volume}) => {

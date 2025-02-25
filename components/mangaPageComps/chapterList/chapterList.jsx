@@ -1,10 +1,10 @@
 'use client'
 
+import ListVol from "../chapterListVol/chapterListVol";
 import { getMangaChapters } from "@/utils/getReq";
 import { useState, useEffect } from 'react';
-import ListVol from "../chapterListVol/chapterListVol";
-import LoadingSpinner from "@/components/loadingSpinner/loadingSpinner";
 
+import LoadingSpinner from "@/components/loadingSpinner/loadingSpinner";
 
 
 const ChapterList = ({mangaUID}) => {
