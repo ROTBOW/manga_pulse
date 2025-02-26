@@ -1,6 +1,6 @@
 'use client'
 import { getChapterNumber, getChapterLang, getChapterScansGroup, getChapterUploader, getChapterUploaderUID, getChapterTitle } from "@/utils/dataManipulation/chapter";
-import { timeSince } from '@/utils/dataManipulation/misc';
+import { timeSince } from '@/utils/miscFuncs';
 import langToCountry from "@/utils/langToCountry";
 import Flag from 'react-world-flags';
 import { useState } from "react";

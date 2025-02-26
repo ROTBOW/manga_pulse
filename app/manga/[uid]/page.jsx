@@ -8,6 +8,7 @@ import Navbar from "@/components/navbar/navbar";
 import Flag from 'react-world-flags';
 import Image from "next/image";
 import Link from "next/link";
+import LinksSection from "@/components/mangaPageComps/linksSection/linksSection";
 
 
 const MangaPage = async ({ params }) => {

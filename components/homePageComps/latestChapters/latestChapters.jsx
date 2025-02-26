@@ -1,5 +1,5 @@
 import { getChapterScansGroup } from "@/utils/dataManipulation/chapter";
-import { timeSince } from "@/utils/dataManipulation/misc";
+import { timeSince } from "@/utils/miscFuncs";
 import Image from "next/image";
 import Link from "next/link";
 
