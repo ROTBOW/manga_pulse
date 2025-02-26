@@ -1,4 +1,4 @@
-import { getCoverUrl, getDesc, getENTitle, getPubStatus, getPubState, getPubYear, getTags, getContentRating, getAuthor, getArtist, getDemographic, getAltTitles } from "@/utils/dataManipulation/manga";
+import { getCoverUrl, getDesc, getENTitle, getPubStatus, getPubState, getPubYear, getTags, getContentRating, getAuthor, getArtist, getDemographic, getAltTitles, getMangaLinks } from "@/utils/dataManipulation/manga";
 import { getManga } from "@/utils/getReq";
 import { notFound } from "next/navigation";
 
@@ -117,6 +117,8 @@ const MangaPage = async ({ params }) => {
                             <p className="px-1 w-fit text-rose-500 rounded bg-gray-800 text-center mt-1">{getDemographic(manga)}</p>
                         </h2>
                     </div>
+
+                    <LinksSection links={getMangaLinks(manga)}/>
 
                     <div>
                         <h2 className="underline text-md">Alt Titles</h2>
