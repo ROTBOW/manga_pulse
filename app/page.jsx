@@ -1,10 +1,10 @@
-import { Suspense } from "react";
 import { getDevRec, getLatestChapters, getPopTitles } from "@/utils/getReq";
+import { Suspense } from "react";
 
-import Navbar from "@/components/navbar/navbar";
-import Carousel from "@/components/homePageComps/carousel/carousel";
 import LatestChapters from "@/components/homePageComps/latestChapters/latestChapters";
+import Carousel from "@/components/homePageComps/carousel/carousel";
 import DevRec from "@/components/homePageComps/devRec/devRec";
+import Navbar from "@/components/navbar/navbar";
 
 
 
