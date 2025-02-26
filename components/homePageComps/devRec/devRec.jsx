@@ -1,10 +1,10 @@
 'use client'
-import { getCoverUrl } from "@/utils/dataManipulation";
+import { getCoverUrl } from "@/utils/dataManipulation/manga";
 import { useState } from 'react';
+import Image from "next/image";
+import Link from "next/link";
 
 import peek from "@/public/images/LetterPeek.png";
-import Link from "next/link";
-import Image from "next/image";
 
 
 const DevRec = ({mangas}) => {

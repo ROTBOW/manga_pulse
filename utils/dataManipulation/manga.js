@@ -1,64 +1,3 @@
-/* -- Misc functions -- */
-
-export const timeSince = (timestamp) => {
-    const now = new Date();
-    const past = new Date(timestamp);
-    const diffInSeconds = Math.floor((now - past) / 1000);
-
-    const minutes = Math.floor(diffInSeconds / 60);
-    if (minutes < 60) return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
-
-    const hours = Math.floor(minutes / 60);
-    if (hours < 24) return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
-
-    const days = Math.floor(hours / 24);
-    if (days < 7) return `${days} day${days !== 1 ? 's' : ''} ago`;
-
-    const weeks = Math.floor(days / 7);
-    if (weeks < 52) return `${weeks} week${weeks !== 1 ? 's' : ''} ago`;
-
-    const years = Math.floor(weeks / 52);
-    return `${years} year${years !== 1 ? 's' : ''} ago`;
-}
-
-/* -- Chapter functions -- */
-
-// get mangaUID return -1 if it doesn't exist
-/// this is for chapter idk if it will need its own file yet
-export const getMangaUID = (chapterData) => {
-    
-    for (let i = 0; i < chapterData.relationships.length; i++) {
-        if (chapterData.relationships[i].type == 'manga') {
-            return chapterData.relationships[i].id;
-        }
-    }
-
-    return -1
-};
-
-// get scans group from chapter return -1 if it doesn't exist
-export const getChapterScansGroup = (chapterData) => {
-    for (let i = 0; i < chapterData.relationships.length; i++) {
-        if (chapterData.relationships[i].type == 'scanlation_group') {
-            return chapterData.relationships[i].attributes.name;
-        }
-    }
-
-    return 'No Group';
-};
-
-// get chapter number
-export const getChapterNumber = (chapterData) => {
-    return chapterData.attributes.chapter;
-}
-
-// get chapter translated lang
-export const getChapterLang = (chapterData) => {
-    return chapterData.attributes.translatedLanguage;
-}
-
-
-
 /* -- Manga functions -- */
 
 // get cover art return -1 if it doesn't exist
@@ -168,4 +107,9 @@ export const getTags = (mangaData) => {
     }
 
     return tags;
+}
+
+// get links from a manga
+export const getMangaLinks = (mangaData) => {
+    return  mangaData.attributes.links;
 }

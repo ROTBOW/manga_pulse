@@ -1,10 +1,10 @@
 'use client'
+import { useEffect, useState, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import profileIcon from '@/public/icons/account_circle.svg';
 import menuButton from '@/public/icons/menu.svg';
-import { useEffect, useState, useCallback } from 'react';
 
 
 const Navbar = () => {
