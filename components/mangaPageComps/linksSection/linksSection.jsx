@@ -28,7 +28,7 @@ const LinksSectionItem = ({title, id, idOrUrl}) => {
             break;
         
         case 'kt':
-            if (!isNaN(parseInt(idOrUrl))) {
+            if (!isNaN(parseInt(idOrUrl))) { // checks if the string is a num - why do I need two functions to do this Javascript?!
                 link = `https://kitsu.app/manga/${idOrUrl}`;
             } else {
                 link = `https://kitsu.app/manga/?filter[slug]=${idOrUrl}`
@@ -50,7 +50,7 @@ const LinksSectionItem = ({title, id, idOrUrl}) => {
 
     
     return (
-        <li className="px-1 bg-gray-800 w-fit rounded text-nowrap m-1 hover:bg-gray-600">
+        <li className="px-1 bg-gray-800 w-fit rounded text-sm md:text-md text-nowrap m-1 hover:bg-gray-600">
             <a target="_blank" rel="noopener noreferrer" href={link}>
                 {title}
             </a>
@@ -62,9 +62,9 @@ const LinksSectionItem = ({title, id, idOrUrl}) => {
 const LinksSection = ({links}) => {
 
     return (
-        <div>
+        <div className="mb-8">
             <h3>Buy</h3>
-            <ul className="flex w-full flex-wrap">
+            <ul className="flex w-full flex-wrap mb-4">
                 <LinksSectionItem title="Offical Raw" id='raw' idOrUrl={links['raw']} />
                 <LinksSectionItem title="Offical English" id='engtl' idOrUrl={links['engtl']} />
                 <LinksSectionItem title="Book☆Walker" id='bw' idOrUrl={links['bw']} />

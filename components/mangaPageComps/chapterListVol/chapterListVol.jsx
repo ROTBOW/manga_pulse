@@ -30,7 +30,7 @@ const ListVol = ({volume}) => {
             chaps.push(
                 <li key={i} className="p-1 bg-gray-800 mx-6 mb-3 rounded-md">
                     <div className="flex w-full justify-between">
-                        <Link href="#" className="flex items-center">
+                        <Link href="#" className="flex items-center w-1/2 truncate">
                             <Flag code={ langToCountry[getChapterLang(chapter)] } className="h-4 w-6 object-cover rounded mr-1"/>
                             Ch. {getChapterNumber(chapter)}
                             { (getChapterTitle(chapter)) ? (` - ${getChapterTitle(chapter)}`) : '' }
@@ -43,8 +43,8 @@ const ListVol = ({volume}) => {
                     </div>
 
                     <div className="w-full flex justify-between">
-                        <h2 className="text-rose-500 text-sm flex"><Image src={groupIcon} alt="group-icon" width='50' height='50' className="size-5 mr-1"/> {getChapterScansGroup(chapter)}</h2>
-                        <h2>{timeSince(chapter.attributes.updatedAt)}</h2>
+                        <h2 className="text-rose-500 text-sm flex truncate w-1/2"><Image src={groupIcon} alt="group-icon" width='50' height='50' className="size-5 mr-1"/> {getChapterScansGroup(chapter)}</h2>
+                        <h2 className="text-nowrap">{timeSince(chapter.attributes.updatedAt)}</h2>
                     </div>
                 </li>
             )
@@ -55,7 +55,7 @@ const ListVol = ({volume}) => {
 
     return (
         <>
-            <div className="flex justify-between mx-4 text-2xl font-sigmarOne text-rose-500">
+            <div className="flex justify-between mx-4 text-2xl font-sigmarOne text-rose-500 w-full md:w-auto">
                 <h2>{getVolNum()}</h2>
                 <Image
                     src={dropdownArrow}
@@ -68,7 +68,7 @@ const ListVol = ({volume}) => {
             </div>
             <ol
                 className={`mx-4 border-b border-emerald-400 overflow-hidden transition-[max-height] duration-1000 ease-in-out`}
-                style={{ maxHeight: showChaps ? '100%' : '0rem' }} 
+                style={{ maxHeight: showChaps ? '300rem' : '0rem' }} 
             >
                 {genChapters()}
             </ol>

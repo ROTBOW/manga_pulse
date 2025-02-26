@@ -58,11 +58,11 @@ const ChapterList = ({mangaUID}) => {
     if (chapters.length === 0) return <div className="flex w-3/5 h-full items-center justify-center"><LoadingSpinner/></div>;
     return(
         <>
-            <div>
+            <div className="hidden md:block">
                 <button className="px-1 w-12 bg-gray-800 hover:bg-gray-600 rounded capitalize" onClick={()=>toggleOrder()}>{order}</button>
             </div>
 
-            <ol className="w-3/5">
+            <ol className="w-full md:w-3/5 mr-3">
                 {genVolumes()}  
             </ol>
         </>
