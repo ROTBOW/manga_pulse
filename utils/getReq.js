@@ -91,10 +91,7 @@ export const getMangaChapters = async (UID, order='desc') => {
         },
     }
 
-    let res = await limitedFetch(urlBuilder(url, params));
-    let data = await res.json()
-    
-    return data.data;
+    return await limitedFetch(urlBuilder(url, params));
 };
 
 // get top 10 popular titles over the last month

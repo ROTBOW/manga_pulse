@@ -1,7 +1,6 @@
 'use client'
 
 import ListVol from "../chapterListVol/chapterListVol";
-import { getMangaChapters } from "@/utils/getReq";
 import { useState, useEffect } from 'react';
 
 import LoadingSpinner from "@/components/loadingSpinner/loadingSpinner";
@@ -13,7 +12,10 @@ const ChapterList = ({mangaUID}) => {
 
     useEffect(() => {
         let getData = async () => {
-            setChapters(await getMangaChapters(mangaUID, order));
+            // also need to take into account pagination in the future
+            let res = await fetch(`/api/getMangaFeed?uid=${mangaUID}&order=${order}`)
+            let data = await res.json()
+            setChapters(data.data)
         }
 
         getData();
