@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 
 import ChapterList from "@/components/mangaPageComps/chapterList/chapterList";
 import langToCountry from "@/utils/langToCountry";
-import Navbar from "@/components/navbar/navbar";
+import Navbar from "@/components/navbarComps/navbar/navbar";
 import Flag from 'react-world-flags';
 import Image from "next/image";
 import Link from "next/link";
