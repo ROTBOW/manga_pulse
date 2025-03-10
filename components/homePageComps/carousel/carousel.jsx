@@ -4,11 +4,25 @@ import { useEffect, useState } from 'react';
 import Image from "next/image";
 import Link from "next/link";
 
+import popTitlesSkeleton from "@/skeletonData/popTitlesSkeleton";
+import { contentRatingArray } from "@/utils/miscFuncs";
 import noDesc from '@/public/images/noDesc.png';
+import { getPopTitles } from "@/utils/getReq";
 
 
-const Carousel = ({mangas}) => {
-    let [curPage, setCurPage] = useState(0);
+const Carousel = () => {
+    const [mangas, setMangas] = useState(popTitlesSkeleton);
+    const [curPage, setCurPage] = useState(0);
+
+    useEffect(() => {
+        const fetchManga = async () => {
+            let popTitles = await getPopTitles(contentRatingArray());
+            setMangas(popTitles);
+            
+        }
+
+        fetchManga();
+    }, [])
 
     useEffect(() => {
         const inter = setInterval(() => {

@@ -1,36 +1,34 @@
 'use client'
-import { useEffect, useState } from "react";
+import { CONTENTPREFS } from "@/utils/enums";
+import { useEffect, useState, useRef } from "react";
 
 const ContentPrefMenu = ({resetView}) => {
-    const [contentPrefs, setContentPrefs] = useState({
-        safe: true,
-        suggestive: true,
-        erotica: false,
-        pornographic: false
-    })
-
-    useEffect(() => { 
-        // check if prefs were saved in localstorage, if so update the state to match it
-        if (localStorage.getItem('contentPrefs') === null) {
-            // no saved pref, so we default
-            localStorage.setItem(
-                'contentPrefs',
-                JSON.stringify(contentPrefs)
-            )
-        } else {
-            // if there is a saved pref, we update the local state to reflect it
-            setContentPrefs(JSON.parse(localStorage.getItem('contentPrefs')))
+    // get prefs from localstorage for our default, if nothing is saved we use the default
+    const prefs = localStorage.getItem(CONTENTPREFS);
+    const [contentPrefs, setContentPrefs] = useState(
+        (prefs !== null) ?
+        JSON.parse(prefs) :
+        {
+            safe: true,
+            suggestive: true,
+            erotica: false,
+            pornographic: false
         }
-    }, [])
+    );
+    
+    const contentPrefsRef = useRef(contentPrefs);
 
     useEffect(() => {
-        // whenever we change one of these options we update local storage to reflect the change
-        localStorage.setItem(
-            'contentPrefs',
-            JSON.stringify(contentPrefs)
-        )
+        // Update the ref whenever contentPrefs changes
+        contentPrefsRef.current = contentPrefs;
+    }, [contentPrefs]);
 
-    }, [contentPrefs])
+    useEffect(() => { 
+        return () => {
+            // On dismount (whenever the menu is closed) save the settings
+            localStorage.setItem(CONTENTPREFS, JSON.stringify(contentPrefsRef.current))
+        }
+    }, []);
 
     return (
         <div className="flex flex-col font-robotoCondensed text-md">

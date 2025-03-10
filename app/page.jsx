@@ -1,4 +1,4 @@
-import { getDevRec, getLatestChapters, getPopTitles } from "@/utils/getReq";
+import { getDevRec, getLatestChapters } from "@/utils/getReq";
 import { Suspense } from "react";
 
 import LatestChapters from "@/components/homePageComps/latestChapters/latestChapters";
@@ -8,8 +8,8 @@ import Navbar from "@/components/navbarComps/navbar/navbar";
 
 
 
+
 const Home = async () => {
-  let popTitles = await getPopTitles();
   let latestChaps = await getLatestChapters();
   let devRec = await getDevRec();
   
@@ -18,11 +18,9 @@ const Home = async () => {
       <Navbar/>
 
       
-      <Carousel mangas={popTitles}/>
+      <Carousel/>
+      <LatestChapters chapters={latestChaps}/>
 
-      <Suspense>
-        <LatestChapters chapters={latestChaps}/>
-      </Suspense>
 
       <Suspense>
         <DevRec mangas={devRec}/>

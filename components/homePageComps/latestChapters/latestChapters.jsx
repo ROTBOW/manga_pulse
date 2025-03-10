@@ -6,6 +6,8 @@ import Link from "next/link";
 
 const LateChapItem = ({chapter}) => {
 
+    if (chapter === undefined) return <></>
+
     return (
         <li className="flex p-1 h-20 w-full mb-2 font-robotoCondensed items-center">
             <Link href="#" className="min-w-14 min-h-20 w-14 h-20 mr-2 bg-rose-700 rounded">

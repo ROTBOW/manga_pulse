@@ -78,11 +78,11 @@ export const getManga = async (UID) => {
 }
 
 // gets the vol and chapters of a manga by its UID
-export const getMangaChapters = async (UID, order='desc') => {
+export const getMangaChapters = async (UID, order='desc', contentPref=['safe', 'suggestive']) => {
     let url = `https://api.mangadex.org/manga/${UID}/feed?`;
     let params = { // going to also want to include cookie for user prefered lang
         limit: 100,
-        'contentRating[]': ['safe', 'suggestive', 'erotica'], // need to make a func that checks the cookies if they set a rating they want/dont want to see
+        'contentRating[]': contentPref,
         includeFutureUpdates: 1,
         'includes[]': ['scanlation_group', 'user'],
         order: {
@@ -96,21 +96,20 @@ export const getMangaChapters = async (UID, order='desc') => {
 
 // get top 10 popular titles over the last month
 //// TO DO - ADD ERROR HANDLING FOR A BAD REQUEST
-export const getPopTitles = async () => {
+export const getPopTitles = async (contentPref=['safe', 'suggestive']) => {
     const lastMonth = new Date();
     lastMonth.setHours(0, 0, 0, 0);
     lastMonth.setDate(lastMonth.getDate());
     lastMonth.setMonth(lastMonth.getMonth() - 1);
 
     const midnightISO = lastMonth.toISOString().split('.')[0];
-
     let url = 'https://api.mangadex.org/manga?'
     let params = {
         'includes[]': ['cover_art', 'artist', 'author'],
         order: {
             followedCount: 'desc'
         },
-        'contentRating[]': ['safe', 'suggestive'], // need to make a func that checks the cookies if they set a rating they want/dont want to see
+        'contentRating[]': contentPref,
         hasAvailableChapters: 'true',
         createdAtSince: midnightISO
     }
@@ -146,13 +145,12 @@ export const getDevRec = async () => {
 // get 30 latest chapters with their cover art and titles
 /// Will def need to be optimized in the future but this is the path of least resistance rn
 /// This is def not best practice, and I can't do it again, but my God it was painful to get it working and I'm not touching it.
-//// TO DO - MAKE THIS REACT TO A USER'S DESIRE FOR FLESH (ie if they wanna see 18+ content or not)
-export const getLatestChapters = async () => {
+export const getLatestChapters = async (contentPref=['safe', 'suggestive']) => {
     let url1 = 'https://api.mangadex.org/chapter?';
     let params1 = {
         limit: 100,
         order: {readableAt: 'desc'},
-        'contentRating[]': ['suggestive', 'safe'], // need to make a func that checks the cookies if they set a rating they want/dont want to see
+        'contentRating[]': contentPref,
         'translatedLanguage[]': ['en'],
         'includes[]': 'scanlation_group'
     };
@@ -179,7 +177,7 @@ export const getLatestChapters = async () => {
 
     let params2 = {
         limit: 100,
-        'contentRating[]': ['safe', 'suggestive', 'erotica'], // need to make a func that checks the cookies if they set a rating they want/dont want to see
+        'contentRating[]': contentPref,
         'includes[]': ['cover_art'],
         'ids[]': [...uids]
     }
