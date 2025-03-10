@@ -1,5 +1,7 @@
 /* -- Chapter functions -- */
 
+import blankCard from '@/public/skeletonImgs/blankCard.webp';
+
 // get mangaUID return -1 if it doesn't exist
 /// this is for chapter idk if it will need its own file yet
 export const getMangaUID = (chapterData) => {
@@ -45,6 +47,16 @@ export const getChapterUploaderUID = (chapterData) => {
 
     return -1;
 };
+
+// get cover art url returns blank image on bad load
+export const getChapterCoverUrl = (chapterData) => {
+    let coverUrl = chapterData.cover_art;
+    if (coverUrl == '') {
+        return blankCard;
+    }
+
+    return coverUrl;
+}
 
 // get chapter number
 export const getChapterNumber = (chapterData) => {

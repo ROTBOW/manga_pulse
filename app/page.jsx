@@ -1,4 +1,4 @@
-import { getDevRec, getLatestChapters } from "@/utils/getReq";
+import { getDevRec } from "@/utils/getReq";
 import { Suspense } from "react";
 
 import LatestChapters from "@/components/homePageComps/latestChapters/latestChapters";
@@ -10,7 +10,6 @@ import Navbar from "@/components/navbarComps/navbar/navbar";
 
 
 const Home = async () => {
-  let latestChaps = await getLatestChapters();
   let devRec = await getDevRec();
   
   return (
@@ -19,7 +18,7 @@ const Home = async () => {
 
       
       <Carousel/>
-      <LatestChapters chapters={latestChaps}/>
+      <LatestChapters/>
 
 
       <Suspense>

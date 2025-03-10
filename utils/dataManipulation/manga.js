@@ -14,7 +14,7 @@ const getCoverFileName = (mangaData) => {
 };
 
 
-// get cover art url returns "wut" image on bad load
+// get cover art url returns blank image on bad load
 export const getCoverUrl = (mangaData) => {
     let coverFileName = getCoverFileName(mangaData);
     if (coverFileName == -1) {

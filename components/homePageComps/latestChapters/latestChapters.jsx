@@ -1,7 +1,11 @@
-import { getChapterScansGroup } from "@/utils/dataManipulation/chapter";
-import { timeSince } from "@/utils/miscFuncs";
+'use client'
+import { getChapterCoverUrl, getChapterScansGroup, getMangaUID } from "@/utils/dataManipulation/chapter";
+import { contentRatingArray, timeSince } from "@/utils/miscFuncs";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import latestChaptersSkeleton from "@/skeletonData/latestChaptersSkeleton";
+import { getLatestChapters } from "@/utils/getReq";
 
 
 const LateChapItem = ({chapter}) => {
@@ -12,7 +16,7 @@ const LateChapItem = ({chapter}) => {
         <li className="flex p-1 h-20 w-full mb-2 font-robotoCondensed items-center">
             <Link href="#" className="min-w-14 min-h-20 w-14 h-20 mr-2 bg-rose-700 rounded">
                 <Image 
-                    src={chapter.cover_art} 
+                    src={getChapterCoverUrl(chapter)} 
                     width="56" 
                     height="80"
                     alt={`${chapter.title}'s Thumbnail`}
@@ -21,7 +25,7 @@ const LateChapItem = ({chapter}) => {
                 />
             </Link>
             <div className="" style={{width: '78%'}}>
-                <Link href="#" className="w-full block"><h4 className="truncate w-full" title={chapter.title}>{chapter.title}</h4></Link>
+                <Link href={`/manga/${getMangaUID(chapter)}`} className="w-full block"><h4 className="truncate w-full" title={chapter.title}>{chapter.title}</h4></Link>
                 <p className="text-sm truncate w-full text-emerald-400">{
                 `
                 ${chapter.attributes.volume ? "Vol. " + chapter.attributes.volume +' ' : ''}
@@ -40,9 +44,18 @@ const LateChapItem = ({chapter}) => {
 }
 
 
-const LatestChapters = ({ chapters }) => {
+const LatestChapters = () => {
+    const [chapters, setChapters] = useState(latestChaptersSkeleton);
 
+    useEffect(() => {
+        const fetchChapters = async () => {
+            // do stuff with getlatestChapters
+            let chaps = await getLatestChapters(contentRatingArray());
+            setChapters(chaps)
+        }
 
+        fetchChapters();
+    }, []);
 
     const getXtoYChapters = (x, y) => {
         let olItems = [];
