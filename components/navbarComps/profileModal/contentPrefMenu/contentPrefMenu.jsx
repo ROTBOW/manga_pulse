@@ -31,6 +31,7 @@ const ContentPrefMenu = ({resetView}) => {
     }, []);
 
     return (
+        <>
         <div className="flex flex-col font-robotoCondensed text-md">
             <button 
                 onClick={() => {resetView(-1)}}
@@ -47,6 +48,7 @@ const ContentPrefMenu = ({resetView}) => {
                         safe: e.target.checked,
                     }))}
                     checked={contentPrefs.safe}
+                    className="mr-1"
                 />
                 Safe
             </label>
@@ -58,6 +60,7 @@ const ContentPrefMenu = ({resetView}) => {
                         suggestive: e.target.checked,
                     }))}
                     checked={contentPrefs.suggestive}
+                    className="mr-1"
                 />
                 Suggestive
             </label>
@@ -69,6 +72,7 @@ const ContentPrefMenu = ({resetView}) => {
                         erotica: e.target.checked,
                     }))}
                     checked={contentPrefs.erotica}
+                    className="mr-1"
                 />
                 Erotica
             </label>
@@ -80,10 +84,14 @@ const ContentPrefMenu = ({resetView}) => {
                         pornographic: e.target.checked,
                     }))}
                     checked={contentPrefs.pornographic}
+                    className="mr-1"
                 />
                 Pornographic
             </label>
+
         </div>
+        <p className="text-xs italic text-white text-opacity-45 font-robotoCondensed">Give it a few seconds then refresh to see changes</p>
+        </>
     )
 };
 
