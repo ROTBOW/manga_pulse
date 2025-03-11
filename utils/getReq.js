@@ -78,13 +78,13 @@ export const getManga = async (UID) => {
 }
 
 // gets the vol and chapters of a manga by its UID
-export const getMangaChapters = async (UID, order='desc', contentPref=['safe', 'suggestive']) => {
+export const getMangaChapters = async (UID, order='desc', langs=[]) => {
     let url = `https://api.mangadex.org/manga/${UID}/feed?`;
     let params = { // going to also want to include cookie for user prefered lang
         limit: 100,
-        'contentRating[]': contentPref,
         includeFutureUpdates: 1,
         'includes[]': ['scanlation_group', 'user'],
+        'translatedLanguage[]': langs,
         order: {
             volume: order,
             chapter: order
@@ -145,13 +145,13 @@ export const getDevRec = async () => {
 // get 30 latest chapters with their cover art and titles
 /// Will def need to be optimized in the future but this is the path of least resistance rn
 /// This is def not best practice, and I can't do it again, but my God it was painful to get it working and I'm not touching it.
-export const getLatestChapters = async (contentPref=['safe', 'suggestive']) => {
+export const getLatestChapters = async (contentPref=['safe', 'suggestive'], langs=[]) => {
     let url1 = 'https://api.mangadex.org/chapter?';
     let params1 = {
         limit: 100,
         order: {readableAt: 'desc'},
         'contentRating[]': contentPref,
-        'translatedLanguage[]': ['en'],
+        'translatedLanguage[]': langs,
         'includes[]': 'scanlation_group'
     };
     let res = await limitedFetch(urlBuilder(url1, params1));

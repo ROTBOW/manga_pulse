@@ -2,9 +2,11 @@
 import { useEffect, useState } from "react";
 
 import ContentPrefMenu from "./contentPrefMenu/contentPrefMenu";
+import LangPrefMenu from "./langPrefMenu/langPrefMenu";
 
 const navComps = [
     ContentPrefMenu,
+    LangPrefMenu,
 ]
 
 
@@ -27,7 +29,10 @@ const ProfileModal = ({hideModal}) => {
                     className="mb-2 border-b hover:text-rose-500 cursor-pointer"
                 >Content Filter</div>
 
-                <div className="mb-2 border-b hover:text-rose-500 cursor-pointer">Chapter Languages</div>
+                <div
+                    onClick={() => setCurSubModal(1)}
+                    className="mb-2 border-b hover:text-rose-500 cursor-pointer"
+                >Chapter Languages</div>
             </>
 
         )

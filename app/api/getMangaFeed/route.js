@@ -14,7 +14,7 @@ export const GET = async (req) => {
     const searchParams = req.nextUrl.searchParams;
 
     try {
-        const response = await getMangaChapters(searchParams.get('uid'), searchParams.get('order'));
+        const response = await getMangaChapters(searchParams.get('uid'), searchParams.get('order'), JSON.parse(searchParams.get('langs')));
         const data = await response.json();
         return new Response(JSON.stringify(data), {
             status: response.status,

@@ -3,6 +3,7 @@ const langToCountry = {
     'es': 'es',  // Spanish - Spain
     'es-la': 'es',  // Spanish - Spain
     'zh': 'cn',  // Chinese - China
+    'zh-tw': 'cn',  // Chinese (Traditional) - China
     'zh-hk': 'cn',  // Chinese (Hong Kong) - China
     'hi': 'in',  // Hindi - India
     'ar': 'sa',  // Arabic - Saudi Arabia
@@ -48,6 +49,27 @@ const langToCountry = {
     'ga': 'ie',  // Irish - Ireland
     'cy': 'gb',  // Welsh - United Kingdom
     'gd': 'gb',  // Scottish Gaelic - United Kingdom
+    'af': 'za',  // Afrikaans - South Africa
+    'az': 'az',  // Azerbaijani - Azerbaijan
+    'be': 'by',  // Belarusian - Belarus
+    'bn': 'bd',  // Bengali - Bangladesh
+    'ca': 'es',  // Catalan - Spain
+    'cv': 'ru',  // Chuvash - Russia
+    'eo': 'int', // Esperanto - International
+    'eu': 'es',  // Basque - Spain
+    'fa': 'ir',  // Persian - Iran
+    'jv': 'id',  // Javanese - Indonesia
+    'ka': 'ge',  // Georgian - Georgia
+    'kk': 'kz',  // Kazakh - Kazakhstan
+    'la': 'va',  // Latin - Vatican City
+    'mn': 'mn',  // Mongolian - Mongolia
+    'my': 'mm',  // Burmese - Myanmar
+    'ne': 'np',  // Nepali - Nepal
+    'ta': 'in',  // Tamil - India
+    'te': 'in',  // Telugu - India
+    'tl': 'ph',  // Filipino - Philippines
+    'ur': 'pk',  // Urdu - Pakistan
+    'uz': 'uz',  // Uzbek - Uzbekistan
 };
 
 export default langToCountry;

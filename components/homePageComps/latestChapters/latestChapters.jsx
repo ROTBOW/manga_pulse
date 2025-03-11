@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import latestChaptersSkeleton from "@/skeletonData/latestChaptersSkeleton";
 import { getLatestChapters } from "@/utils/getReq";
+import { LANGPREFS } from "@/utils/enums";
 
 
 const LateChapItem = ({chapter}) => {
@@ -14,7 +15,7 @@ const LateChapItem = ({chapter}) => {
 
     return (
         <li className="flex p-1 h-20 w-full mb-2 font-robotoCondensed items-center">
-            <Link href="#" className="min-w-14 min-h-20 w-14 h-20 mr-2 bg-rose-700 rounded">
+            <Link href={`/manga/${getMangaUID(chapter)}`} className="min-w-14 min-h-20 w-14 h-20 mr-2 bg-rose-700 rounded">
                 <Image 
                     src={getChapterCoverUrl(chapter)} 
                     width="56" 
@@ -49,9 +50,10 @@ const LatestChapters = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        const langs = JSON.parse(localStorage.getItem(LANGPREFS)) || [];
         const fetchChapters = async () => {
             // do stuff with getlatestChapters
-            let chaps = await getLatestChapters(contentRatingArray());
+            let chaps = await getLatestChapters(contentRatingArray(), langs);
             setChapters(chaps);
             setLoading(false);
         }

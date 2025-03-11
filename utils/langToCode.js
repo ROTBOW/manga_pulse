@@ -1,4 +1,4 @@
-const langToFullName = {
+const langToCode = {
     'English': 'en',
     'Afrikaans': 'af',
     'Albanian': 'sq',
@@ -63,4 +63,4 @@ const langToFullName = {
     'Vietnamese': 'vi'
 };
 
-export default langToFullName;
+export default langToCode;
