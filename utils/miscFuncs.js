@@ -17,6 +17,8 @@ export const timeSince = (timestamp) => {
     const past = new Date(timestamp);
     const diffInSeconds = Math.floor((now - past) / 1000);
 
+    if (isNaN(diffInSeconds)) return '';
+
     const minutes = Math.floor(diffInSeconds / 60);
     if (minutes < 60) return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
 

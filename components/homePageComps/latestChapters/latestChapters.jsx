@@ -46,12 +46,14 @@ const LateChapItem = ({chapter}) => {
 
 const LatestChapters = () => {
     const [chapters, setChapters] = useState(latestChaptersSkeleton);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchChapters = async () => {
             // do stuff with getlatestChapters
             let chaps = await getLatestChapters(contentRatingArray());
-            setChapters(chaps)
+            setChapters(chaps);
+            setLoading(false);
         }
 
         fetchChapters();
@@ -70,7 +72,7 @@ const LatestChapters = () => {
         return olItems;
     }
 
-    const olClass = 'bg-gray-800 p-2 mx-2 rounded-md w-1/3';
+    const olClass = `bg-gray-800 p-2 mx-2 rounded-md w-1/3 ${loading ? 'animate-pulse' : ''}`;
     const olStyle = {minWidth: '18.75rem', maxWidth: "20rem"};
     return (
         <div className="flex flex-col items-center mt-14 w-4/5">
