@@ -1,5 +1,5 @@
 import letterBuild from "@/public/images/WIP.png";
-import Navbar from "@/components/navbar/navbar";
+import Navbar from "@/components/navbarComps/navbar/navbar";
 import Image from "next/image";
 
 

@@ -4,16 +4,19 @@ import ListVol from "../chapterListVol/chapterListVol";
 import { useState, useEffect } from 'react';
 
 import LoadingSpinner from "@/components/loadingSpinner/loadingSpinner";
+import { LANGPREFS } from "@/utils/enums";
 
 
 const ChapterList = ({mangaUID}) => {
     const [chapters, setChapters] = useState([]);
-    const [order, setOrder] = useState('desc')
-
+    const [order, setOrder] = useState('desc');
+    
     useEffect(() => {
+        const langs = localStorage.getItem(LANGPREFS) || [];
         let getData = async () => {
             // also need to take into account pagination in the future
-            let res = await fetch(`/api/getMangaFeed?uid=${mangaUID}&order=${order}`)
+            
+            let res = await fetch(`/api/getMangaFeed?uid=${mangaUID}&order=${order}&langs=${langs}`)
             let data = await res.json()
             setChapters(data.data)
         }

@@ -1,5 +1,7 @@
 /* -- Manga functions -- */
 
+import blankCard from '@/public/skeletonImgs/blankCard.webp';
+
 // get cover art return -1 if it doesn't exist
 const getCoverFileName = (mangaData) => {
     for (let i = 0; i < mangaData.relationships.length; i++) {
@@ -12,11 +14,11 @@ const getCoverFileName = (mangaData) => {
 };
 
 
-// get cover art url returns "wut" image on bad load
+// get cover art url returns blank image on bad load
 export const getCoverUrl = (mangaData) => {
     let coverFileName = getCoverFileName(mangaData);
     if (coverFileName == -1) {
-        return '' // add "wut" image here
+        return blankCard;
     }
 
     return `https://mangadex.org/covers/${mangaData.id}/${coverFileName}`;

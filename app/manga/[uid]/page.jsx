@@ -1,14 +1,36 @@
 import { getCoverUrl, getDesc, getENTitle, getPubStatus, getPubState, getPubYear, getTags, getContentRating, getAuthor, getArtist, getDemographic, getAltTitles, getMangaLinks } from "@/utils/dataManipulation/manga";
 import { getManga } from "@/utils/getReq";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
+import LinksSection from "@/components/mangaPageComps/linksSection/linksSection";
 import ChapterList from "@/components/mangaPageComps/chapterList/chapterList";
+import Navbar from "@/components/navbarComps/navbar/navbar";
 import langToCountry from "@/utils/langToCountry";
-import Navbar from "@/components/navbar/navbar";
 import Flag from 'react-world-flags';
 import Image from "next/image";
 import Link from "next/link";
-import LinksSection from "@/components/mangaPageComps/linksSection/linksSection";
+
+
+//// this was part of a content rating check - I may use this code later to implement the feature so I am leaving it here for now ////
+// import { contentRatingArray } from "@/utils/miscFuncs";
+// import { headers } from "next/headers";
+// helper - if something else need it I'll move it to a utils file
+// const checkIfNonexplicit = (currRating) => {
+//     // get our rating from local storage
+//     const rating = contentRatingArray();
+//     switch (currRating) {
+//         case 'safe':
+//         case 'suggestive':
+//             return false;
+            
+//         case 'erotica':
+//         case 'pornographic':
+//             if (!rating.includes(currRating)) {
+//                 return true
+//             }
+//             return false
+//     };
+// }
 
 
 const MangaPage = async ({ params }) => {
@@ -20,9 +42,15 @@ const MangaPage = async ({ params }) => {
         // got a bad request
         notFound();
     }
-    
-    // add a check here for erotica and porno to have them valid they are of age and they wanna see that content
-    // gonna wait on this ^ since I want it to check the cookies/localstorage if they have saved settings
+
+    //// this was part of a content rating check - I may use this code later to implement the feature so I am leaving it here for now ////
+    // const headList = headers();
+    // const url = new URL(headList.get('referer') || 'http://localhost');
+    // const contentCheck = url.searchParams.get('contentcheck');
+    // if (checkIfNonexplicit(getContentRating(manga))) {
+    //     // redirect here to the warning page
+    //     redirect(`/warning?origin=${url}`)
+    // }
 
 
     const genTags = () => {

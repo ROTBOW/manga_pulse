@@ -1,4 +1,4 @@
-import Navbar from "@/components/navbar/navbar";
+import Navbar from "@/components/navbarComps/navbar/navbar";
 import wut0 from '@/public/images/wut0.png';
 import wut1 from '@/public/images/wut1.png';
 import wut2 from '@/public/images/wut2.png';
