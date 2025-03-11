@@ -96,7 +96,7 @@ export const getMangaChapters = async (UID, order='desc', langs=[]) => {
 
 // get top 10 popular titles over the last month
 //// TO DO - ADD ERROR HANDLING FOR A BAD REQUEST
-export const getPopTitles = async (contentPref=['safe', 'suggestive']) => {
+export const getTopTitles = async (contentPref=['safe', 'suggestive']) => {
     const lastMonth = new Date();
     lastMonth.setHours(0, 0, 0, 0);
     lastMonth.setDate(lastMonth.getDate());
@@ -114,11 +114,7 @@ export const getPopTitles = async (contentPref=['safe', 'suggestive']) => {
         createdAtSince: midnightISO
     }
     
-    let res = await limitedFetch(urlBuilder(url, params));
-    let data = await res.json()
-    
-    return data.data
-
+    return await limitedFetch(urlBuilder(url, params));
 }
 
 
@@ -145,7 +141,7 @@ export const getDevRec = async () => {
 // get 30 latest chapters with their cover art and titles
 /// Will def need to be optimized in the future but this is the path of least resistance rn
 /// This is def not best practice, and I can't do it again, but my God it was painful to get it working and I'm not touching it.
-export const getLatestChapters = async (contentPref=['safe', 'suggestive'], langs=[]) => {
+export const getLatestChapters = async (contentPref=['safe', 'suggestive'], langs=[]) => { 
     let url1 = 'https://api.mangadex.org/chapter?';
     let params1 = {
         limit: 100,
@@ -197,5 +193,5 @@ export const getLatestChapters = async (contentPref=['safe', 'suggestive'], lang
     };
 
 
-    return forwardData;
+    return JSON.stringify(forwardData);
 }

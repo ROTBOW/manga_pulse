@@ -7,18 +7,19 @@ import Link from "next/link";
 import popTitlesSkeleton from "@/skeletonData/popTitlesSkeleton";
 import { contentRatingArray } from "@/utils/miscFuncs";
 import noDesc from '@/public/images/noDesc.png';
-import { getPopTitles } from "@/utils/getReq";
 
 
 const Carousel = () => {
     const [mangas, setMangas] = useState(popTitlesSkeleton);
     const [curPage, setCurPage] = useState(0);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchManga = async () => {
-            let popTitles = await getPopTitles(contentRatingArray());
-            setMangas(popTitles);
-            
+            const res = await fetch(`/api/getTopTitles?contentRating=${JSON.stringify(contentRatingArray())}`);
+            const data = await res.json();
+            setMangas(data.data);
+            setLoading(false);
         }
 
         fetchManga();
@@ -47,7 +48,7 @@ const Carousel = () => {
             tiles.push(
             <li
                 key={idx}
-                className={`bg-rose-700 mx-1 transition-all hover:animate-pulse hover:scale-105 hover:opacity-100 hover:cursor-pointer ${ idx === curPage ? '!opacity-100 animate-pulse scale-105' : 'opacity-30'}`}
+                className={`${loading ? 'animate-pulse' : ''} bg-rose-700 mx-1 transition-all hover:animate-pulse hover:scale-105 hover:opacity-100 hover:cursor-pointer ${ idx === curPage ? '!opacity-100 animate-pulse scale-105' : 'opacity-30'}`}
                 style={{width: '10%', height: '17rem'}}
                 onClick={(e) => {setCurPage((idx))}}
             >

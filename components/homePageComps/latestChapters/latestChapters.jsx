@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import latestChaptersSkeleton from "@/skeletonData/latestChaptersSkeleton";
-import { getLatestChapters } from "@/utils/getReq";
 import { LANGPREFS } from "@/utils/enums";
 
 
@@ -50,11 +49,12 @@ const LatestChapters = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const langs = JSON.parse(localStorage.getItem(LANGPREFS)) || [];
+        const langs = localStorage.getItem(LANGPREFS) || '[]';
         const fetchChapters = async () => {
-            // do stuff with getlatestChapters
-            let chaps = await getLatestChapters(contentRatingArray(), langs);
-            setChapters(chaps);
+            const res = await fetch(`/api/getLatestChapters?contentRating=${JSON.stringify(contentRatingArray())}&langs=${langs}`)
+            const data = await res.json();
+            
+            setChapters(data);
             setLoading(false);
         }
 
