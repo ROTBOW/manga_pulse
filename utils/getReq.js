@@ -195,3 +195,9 @@ export const getLatestChapters = async (contentPref=['safe', 'suggestive'], lang
 
     return JSON.stringify(forwardData);
 }
+
+
+export const getChapterPages = async (UID) => {
+    const res = await limitedFetch(`https://api.mangadex.org/at-home/server/${UID}`);
+    return await res.json();
+}

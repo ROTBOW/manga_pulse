@@ -15,11 +15,11 @@ export const GET = async (req) => {
 
     try {
         const response = await getMangaChapters(searchParams.get('uid'), searchParams.get('order'), JSON.parse(searchParams.get('langs')));
-        const data = await response.json();
-        return new Response(JSON.stringify(data), {
+        return new Response(response, {
             status: response.status,
             headers: { 'Content-Type': 'application/json' }
         });
+        
     } catch (error) {
         console.error('Error fetching manga chapters:', error);
         return new Response(JSON.stringify({ error: 'Failed to fetch manga chapters' }), {

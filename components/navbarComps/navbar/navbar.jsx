@@ -8,7 +8,9 @@ import profileIcon from '@/public/web-app-manifest-512x512.png';
 import menuButton from '@/public/icons/menu.svg';
 
 
-const Navbar = () => {
+const Navbar = ({displayType}) => {
+    displayType = displayType || 'fixed';
+
     const [showBg, setShowBg] = useState(false);
     const [showProfileModal, setShowProfileModal] = useState(false);
 
@@ -32,8 +34,11 @@ const Navbar = () => {
 
     return (
         <>
-        <div className={`w-screen z-20 h-16 fixed top-0 pointer-events-none ${showBg ? 'bg-gray-800 border-b border-rose-500' : ''}`}/>
-        <header className="fixed top-2 flex justify-center sm:justify-between w-full sm:w-2/3 font-sigmarOne z-50">
+        { (displayType === 'fixed') ?
+        <div className={`fixed w-screen z-20 h-16 top-0 pointer-events-none ${showBg ? 'bg-gray-800 border-b border-rose-500' : ''}`}/> : 
+        ""
+        }
+        <header className={`${displayType} top-2 flex justify-center sm:justify-between w-full sm:w-2/3 font-sigmarOne z-50`}>
             <div className='flex items-center'>
                 <div className={`opacity-0 rounded-md mr-1 ${showBg ? 'bg-gray-700' : ''}`}>
                     <Image
@@ -72,6 +77,10 @@ const Navbar = () => {
                 </div>
             </div>
         </header>
+        { (displayType !== 'fixed') ?
+        <div className='h-2 w-full border-b border-rose-500'/> : 
+        ""
+        }
         </>
     )
 }

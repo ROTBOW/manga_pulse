@@ -1,6 +1,6 @@
 import { getCoverUrl, getDesc, getENTitle, getPubStatus, getPubState, getPubYear, getTags, getContentRating, getAuthor, getArtist, getDemographic, getAltTitles, getMangaLinks } from "@/utils/dataManipulation/manga";
 import { getManga } from "@/utils/getReq";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 
 import LinksSection from "@/components/mangaPageComps/linksSection/linksSection";
 import ChapterList from "@/components/mangaPageComps/chapterList/chapterList";
