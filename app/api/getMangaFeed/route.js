@@ -15,7 +15,8 @@ export const GET = async (req) => {
 
     try {
         const response = await getMangaChapters(searchParams.get('uid'), searchParams.get('order'), JSON.parse(searchParams.get('langs')));
-        return new Response(response, {
+        const data = await response.json()
+        return new Response(JSON.stringify(data), {
             status: response.status,
             headers: { 'Content-Type': 'application/json' }
         });

@@ -80,7 +80,7 @@ export const getManga = async (UID) => {
 // gets the vol and chapters of a manga by its UID
 export const getMangaChapters = async (UID, order='desc', langs=[]) => {
     let url = `https://api.mangadex.org/manga/${UID}/feed?`;
-    let params = { // going to also want to include cookie for user prefered lang
+    let params = {
         limit: 100,
         includeFutureUpdates: 1,
         'includes[]': ['scanlation_group', 'user'],
@@ -90,7 +90,6 @@ export const getMangaChapters = async (UID, order='desc', langs=[]) => {
             chapter: order
         },
     }
-
     return await limitedFetch(urlBuilder(url, params));
 };
 
