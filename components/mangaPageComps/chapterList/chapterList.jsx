@@ -12,7 +12,8 @@ const ChapterList = ({mangaUID}) => {
     const [order, setOrder] = useState('desc');
     
     useEffect(() => {
-        const langs = localStorage.getItem(LANGPREFS) || [];
+        let langs = localStorage.getItem(LANGPREFS) || JSON.stringify([]);
+        
         let getData = async () => {
             // also need to take into account pagination in the future
             
@@ -25,13 +26,7 @@ const ChapterList = ({mangaUID}) => {
     }, [order])
 
     const toggleOrder = () => {
-        setOrder(ord => {
-            if (ord === 'asc') {
-                return 'desc'
-            } else {
-                return 'asc'
-            }
-        })
+        setOrder(ord => ((ord === 'asc') ? 'desc' : 'asc'));
     };
 
     const genVolumes = () => {
