@@ -1,9 +1,9 @@
 'use client'
 
 import Navbar from "@/components/navbarComps/navbar/navbar";
-import { getChapterPages } from "@/utils/getReq";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import Image from "next/image";
 
 
 
@@ -32,15 +32,39 @@ const Reader = () => {
 
     useEffect(() => {
         if (data === null) return; // if we don't have the data yet we ignore
-        console.log(data);
+
         // build urls and add them to pages array
+        setPages(_ => {
+            let pageUrls = [];
+
+            for (let i = 0; i < data.chapter.data.length; i++) {
+                let url = data.baseUrl;
+                url += "/data/";
+                url += data.chapter.hash;
+                url += `/${data.chapter.data[i]}`;
+
+                pageUrls.push(url);
+            }
+
+            return pageUrls;
+        })
+
     }, [data]);
 
     return (
         <div className="flex flex-col items-center">
             <Navbar displayType='block'/>
             <div id="rdr" className="w-full h-screen">
-                reader boi
+                {
+                    pages.map(page => (
+                        <img
+                            src={page}
+                            key={page}
+                            width="1500"
+                            height="1500"
+                        />
+                    ))
+                }
             </div>
         </div>
     )
