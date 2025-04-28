@@ -2,23 +2,31 @@
 
 import Navbar from "@/components/navbarComps/navbar/navbar";
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import Image from "next/image";
+import { useParams, useSearchParams, useRouter } from "next/navigation";
 
 
 
 
 
 const Reader = () => {
+    // next nav consts
     const params = useParams();
+    const searchParams = useSearchParams();
+    const router = useRouter();
+
+    // reader state slice
     const [ data, setData ] = useState(null);
     const [ pages, setPages ] = useState([]);
+    const [idx, setIdx] = useState(0);
 
     
     useEffect(() => {
         // scroll navbar out of view for the reader
         const rdr = document.getElementById("rdr");
         rdr.scrollIntoView({behavior: 'smooth'});
+
+        // get page index
+        setIdx(searchParams.get('page'));
         
         // get data
         const fetchPages = async () => {
@@ -51,20 +59,36 @@ const Reader = () => {
 
     }, [data]);
 
+    const nextPage = ( direction = 1 ) => {
+        return () => {
+            const param = new URLSearchParams(searchParams);
+            let num = param.get('page');
+            num = Number(num);
+            
+            param.set('page', num+direction);
+
+            router.replace(`?${param.toString()}`, {scroll: false})
+            setIdx(num+direction)
+        }
+    }
+
     return (
         <div className="flex flex-col items-center">
             <Navbar displayType='block'/>
-            <div id="rdr" className="w-full h-screen">
+            <div id="rdr" className="w-full h-screen flex flex-col items-center">
+                <div className="absolute w-full flex justify-between">
+                    <div className="bg-red-300 opacity-25 h-screen w-1/3" onClick={nextPage(-1)}/>
+                    <div className="bg-amber-300 opacity-25 h-screen w-1/3"/>
+                    <div className="bg-green-300 opacity-25 h-screen w-1/3" onClick={nextPage(1)}/>
+                </div>
                 {
-                    pages.map(page => (
-                        <img
-                            src={page}
-                            key={page}
-                            width="1500"
-                            height="1500"
-                        />
-                    ))
-                }
+                    <img
+                        src={pages[idx]}
+                        width="1500"
+                        height="1500"
+                        className="h-screen w-auto"
+                    />
+                } 
             </div>
         </div>
     )
