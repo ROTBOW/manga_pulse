@@ -77,6 +77,16 @@ export const getManga = async (UID) => {
 
 }
 
+// get manga by UID - only gets limited data
+export const getMangaLimitedData = async (UID) => {
+    let url = `https://api.mangadex.org/manga/${UID}?`;
+    let params = {
+        'includes[]': ['manga']
+    };
+
+    return limitedFetch(urlBuilder(url, params));
+}
+
 // gets the vol and chapters of a manga by its UID
 export const getMangaChapters = async (UID, order='desc', langs=[]) => {
     let url = `https://api.mangadex.org/manga/${UID}/feed?`;
@@ -195,4 +205,15 @@ export const getLatestChapters = async (contentPref=['safe', 'suggestive'], lang
 export const getChapterPages = async (UID) => {
     const res = await limitedFetch(`https://api.mangadex.org/at-home/server/${UID}`);
     return await res.json();
+}
+
+export const getChapter = async (UID) => {
+    const url = `https://api.mangadex.org/chapter/${UID}?`
+    const params = {
+        'includes[]': ['manga', 'scanlation_group', 'user']
+    }
+
+    const res = await limitedFetch(urlBuilder(url, params));
+
+    return res.json();
 }
