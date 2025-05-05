@@ -3,7 +3,6 @@
 import blankCard from '@/public/skeletonImgs/blankCard.webp';
 
 // get mangaUID return -1 if it doesn't exist
-/// this is for chapter idk if it will need its own file yet
 export const getMangaUID = (chapterData) => {
     
     for (let i = 0; i < chapterData.relationships.length; i++) {
