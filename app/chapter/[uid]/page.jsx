@@ -103,7 +103,7 @@ const Reader = () => {
             
             // check if we've gone off the page count
             if ((num+direction) <= -1 || num+direction >= chapterData.attributes.pages)  {                
-                router.replace(genNextURL(false))
+                router.push(genNextURL( (direction > 0) ? true : false ))
                 return;
             }
 
