@@ -2,7 +2,16 @@ import { getCoverUrl, getENTitle } from "./dataManipulation/manga";
 import { getMangaUID } from './dataManipulation/chapter';
 import Bottleneck from "bottleneck";
 
-// url param builter - should give easier control of the params in each url
+/**
+ * URL parameter builder - provides easier control over parameters in each URL.
+ *
+ * @param {string} url The base URL to build upon.
+ * @param {object} params An object containing the parameters to add to the URL.
+ *                       Each key-value pair will be added as a query parameter.
+ *                       If a value is an array, each element of the array will be
+ *                       added as a separate parameter with the same name.
+ * @returns {string} The complete URL with all parameters appended.
+ */
 const urlBuilder = (url, params) => {
     if (!url.endsWith('?')) url += '?';
 
@@ -31,13 +40,20 @@ const urlBuilder = (url, params) => {
     return url;
 };
 
-// a rate limiter so we don't made the api mad at us 😭
+/**
+ * Rate limiter to prevent overloading the API - limits requests to around 5 per second with only one concurrent request.
+ */
 const limiter = new Bottleneck({
     minTime: 200, // caps us around 5 req per second
     maxConcurrent: 1 // only 1 req at a time
 });
 
-// Function to fetch with rate limiting & retry on 429 (rate limit exceeded)
+/**
+ * Fetches data from a URL with rate limiting and automatic retries on 429 errors.
+ * @param {string} url - The URL to fetch data from
+ * @param {number} revalidate - Time in seconds for Next.js caching (default: 10)
+ * @returns {Promise<Response>} A promise that resolves with the response object
+ */
 const limitedFetch = async (url, revalidate=10) => {
     return limiter.schedule(async () => {
         let res = await fetch(url, {
@@ -57,8 +73,12 @@ const limitedFetch = async (url, revalidate=10) => {
     });
 };
 
-
-// get manga by UID - also gets all addition data
+/**
+ * Get manga details by its unique ID.
+ *
+ * @param {string} UID The unique identifier for the manga.
+ * @returns {object|number} Manga data if found, or -1 if not found.
+ */
 export const getManga = async (UID) => {
     let url = `https://api.mangadex.org/manga/${UID}?`;
     let params = {
@@ -77,7 +97,15 @@ export const getManga = async (UID) => {
 
 }
 
-// get manga by UID - only gets limited data
+
+/**
+ * Get manga details with limited data by its unique ID.
+ * This function retrieves a minimal set of manga information to improve performance.
+ * currently not used, may be removed.
+ *
+ * @param {string} UID The unique identifier for the manga.
+ * @returns {Promise<Response>} A promise that resolves with the response object containing the manga data.
+ */
 export const getMangaLimitedData = async (UID) => {
     let url = `https://api.mangadex.org/manga/${UID}?`;
     let params = {
@@ -87,7 +115,14 @@ export const getMangaLimitedData = async (UID) => {
     return limitedFetch(urlBuilder(url, params));
 }
 
-// gets the vol and chapters of a manga by its UID
+/**
+ * Gets the volume and chapter information for a manga by its UID.
+ * @param {string} UID - The unique identifier of the manga.
+ * @param {string} order - Sorting order ('asc' or 'desc'). Defaults to 'desc'.
+ * @param {string[]} langs - Array of language codes to include. Defaults to [].
+ * @param {number} offset - Offset for pagination. Defaults to 0.
+ * @returns {Promise<object>} Promise that resolves with the manga chapters data.
+ */
 export const getMangaChapters = async (UID, order='desc', langs=[], offset=0) => {
     let url = `https://api.mangadex.org/manga/${UID}/feed?`;
     let params = {
@@ -104,8 +139,11 @@ export const getMangaChapters = async (UID, order='desc', langs=[], offset=0) =>
     return await limitedFetch(urlBuilder(url, params));
 };
 
-// get top 10 popular titles over the last month
-//// TO DO - ADD ERROR HANDLING FOR A BAD REQUEST
+/**
+ * Gets the top 10 most popular manga titles in the last month.
+ * @param {string[]} contentPref - Array of preferred content ratings (e.g., ['safe', 'suggestive']). Defaults to ['safe', 'suggestive'].
+ * @returns {Promise<object>} Promise that resolves with the top manga titles data.
+ */
 export const getTopTitles = async (contentPref=['safe', 'suggestive']) => {
     const lastMonth = new Date();
     lastMonth.setHours(0, 0, 0, 0);
@@ -128,7 +166,10 @@ export const getTopTitles = async (contentPref=['safe', 'suggestive']) => {
 }
 
 
-// gets the dev's (me!) recommendations
+/**
+ * Gets the developer's(me!) recommended manga titles.
+ * @returns {Promise<object>} Promise that resolves with the developer's recommendation data.
+ */
 export const getDevRec = async () => {
     let idRes = await limitedFetch('https://api.mangadex.org/list/d23e31f6-4d5f-4650-8113-20e380b3e79d', 3600);
     let idData = await idRes.json();
@@ -148,9 +189,20 @@ export const getDevRec = async () => {
 }
 
 
-// get 30 latest chapters with their cover art and titles
-/// Will def need to be optimized in the future but this is the path of least resistance rn
-/// This is def not best practice, and I can't do it again, but my God it was painful to get it working and I'm not touching it.
+/**
+ * Get 30 latest chapters with their cover art and titles.
+ * 
+ * This function retrieves the 30 most recent manga chapters based on various criteria, including content preferences and languages.
+ * It fetches chapter data from the MangaDex API and enriches it with additional information like title and cover URL.
+ * 
+ * Will def need to be optimized in the future but this is the path of least resistance rn
+ * This is def not best practice, and I can't do it again, but my God it was painful to get it working and I'm not touching it.
+ * 
+ * @param {string[]} contentPref - Array of content rating preferences (e.g., ['safe', 'suggestive'])
+ * @param {string[]} langs - Array of language codes to include (e.g., ['en', 'es'])
+ * @returns {string} JSON string containing the chapter data
+ * 
+ */
 export const getLatestChapters = async (contentPref=['safe', 'suggestive'], langs=[]) => { 
     let url1 = 'https://api.mangadex.org/chapter?';
     let params1 = {
@@ -203,11 +255,22 @@ export const getLatestChapters = async (contentPref=['safe', 'suggestive'], lang
 }
 
 
+/**
+ * Retrieves chapter pages for a specific manga chapter.
+ *
+ * @param {string} UID The unique identifier of the chapter.
+ * @returns {Promise<object>} A promise that resolves with the chapter page data, including URLs for each page.
+ */
 export const getChapterPages = async (UID) => {
     const res = await limitedFetch(`https://api.mangadex.org/at-home/server/${UID}`);
     return await res.json();
 }
 
+/**
+ * Fetch chapter details from MangaDex API by Chapter UID.
+ * @param {string} UID - Chapter UID to fetch
+ * @returns {Promise<object>} JSON response containing chapter data with related manga, scanlation group, and user information
+ */
 export const getChapter = async (UID) => {
     const url = `https://api.mangadex.org/chapter/${UID}?`
     const params = {

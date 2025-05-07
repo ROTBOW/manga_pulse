@@ -2,7 +2,13 @@
 
 import blankCard from '@/public/skeletonImgs/blankCard.webp';
 
-// get cover art return -1 if it doesn't exist
+/**
+ * Retrieves the cover file name for a manga.
+ * Returns -1 if no cover art is found.
+ *
+ * @param {object} mangaData The manga data object.
+ * @returns {number|string} The cover file name or -1 if not found.
+ */
 const getCoverFileName = (mangaData) => {
     for (let i = 0; i < mangaData.relationships.length; i++) {
         if (mangaData.relationships[i].type == 'cover_art') {
@@ -13,8 +19,13 @@ const getCoverFileName = (mangaData) => {
     return -1
 };
 
-
-// get cover art url returns blank image on bad load
+/**
+ * Retrieves the cover URL for a manga.
+ * Returns a blank image URL if no cover is found or if there's an error loading the cover.
+ *
+ * @param {object} mangaData The manga data object.
+ * @returns {string} The cover URL.
+ */
 export const getCoverUrl = (mangaData) => {
     let coverFileName = getCoverFileName(mangaData);
     if (coverFileName == -1) {
@@ -22,15 +33,25 @@ export const getCoverUrl = (mangaData) => {
     }
 
     return `https://mangadex.org/covers/${mangaData.id}/${coverFileName}`;
-}
+};
 
-
-// get the en title for a manga
+/**
+ * Retrieves the English title for a manga.
+ *
+ * @param {object} mangaData The manga data object.
+ * @returns {string} The English title.
+ */
 export const getENTitle = (mangaData) => {
     return mangaData.attributes.title.en;
-}
+};
 
-// get the Desc for a manga
+/**
+ * Retrieves the description for a manga.
+ * Returns -1 if no description is found.
+ *
+ * @param {object} mangaData The manga data object.
+ * @returns {string|number} The description or -1 if not found.
+ */
 export const getDesc = (mangaData) => {
     const text = mangaData.attributes.description.en;
     
@@ -39,34 +60,66 @@ export const getDesc = (mangaData) => {
     }
 
     return text;
-}
+};
 
-// get content rating manga 
+/**
+ * Retrieves the content rating for a manga.
+ *
+ * @param {object} mangaData The manga data object.
+ * @returns {string} The content rating.
+ */
 export const getContentRating = (mangaData) => {
     return mangaData.attributes.contentRating;
-}
+};
 
-// get year manga was published
+/**
+ * Retrieves the publication year for a manga.
+ *
+ * @param {object} mangaData The manga data object.
+ * @returns {number} The publication year.
+ */
 export const getPubYear = (mangaData) => {
     return mangaData.attributes.year;
-}
+};
 
-// get pub status of manga
+/**
+ * Retrieves the publication status for a manga.
+ *
+ * @param {object} mangaData The manga data object.
+ * @returns {string} The publication status.
+ */
 export const getPubStatus = (mangaData) => {
     return mangaData.attributes.status;
-}
+};
 
-// get pub state of manga
+/**
+ * Retrieves the publication state for a manga.
+ *
+ * @param {object} mangaData The manga data object.
+ * @returns {string} The publication state.
+ */
 export const getPubState = (mangaData) => {
     return mangaData.attributes.state;
-}
+};
 
-// get target demographic of manga
+/**
+ * Retrieves the target demographic for a manga.
+ *
+ * @param {object} mangaData The manga data object.
+ * @returns {string} The target demographic.
+ */
 export const getDemographic = (mangaData) => {
     return mangaData.attributes.publicationDemographic;
-}
+};
 
-// get Author of manga - needs a manga dataslice that has the author included
+/**
+ * Retrieves the author of a manga.
+ * Requires a manga data slice that includes author information.
+ * Returns -1 if no author is found.
+ *
+ * @param {object} mangaData The manga data object.
+ * @returns {string|number} The author's name or -1 if not found.
+ */
 export const getAuthor = (mangaData) => {
     for (let i = 0; i < mangaData.relationships.length; i++) {
         if (mangaData.relationships[i].type == 'author') {
@@ -75,9 +128,16 @@ export const getAuthor = (mangaData) => {
     }
 
     return -1
-}
+};
 
-// get Artist of manga - needs a manga dataslice that has the artist included
+/**
+ * Retrieves the artist of a manga.
+ * Requires a manga data slice that includes artist information.
+ * Returns -1 if no artist is found.
+ *
+ * @param {object} mangaData The manga data object.
+ * @returns {string|number} The artist's name or -1 if not found.
+ */
 export const getArtist = (mangaData) => {
     for (let i = 0; i < mangaData.relationships.length; i++) {
         if (mangaData.relationships[i].type == 'artist') {
@@ -86,18 +146,32 @@ export const getArtist = (mangaData) => {
     }
 
     return -1
-}
+};
 
-// get alt titles for a manga
+/**
+ * Retrieves alternative titles for a manga.
+ *
+ * @param {object} mangaData The manga data object.
+ * @returns {array} An array of alternative title objects.
+ */
 export const getAltTitles = (mangaData) => {
     return mangaData.attributes.altTitles;
-}
+};
 
-// get tags for a manga - need a manga dataslice that has tags included
+/**
+ * Retrieves tags for a manga.
+ * Requires a manga data slice that includes tag information.
+ * Returns an array of tag objects, each containing:
+ *   - id: The tag ID
+ *   - name: The tag name in English
+ *   - group: The tag group
+ *
+ * @param {object} mangaData The manga data object.
+ * @returns {array} An array of tag objects.
+ */
 export const getTags = (mangaData) => {
     let tags = [];
 
-    
     for (let i = 0; i < mangaData.attributes.tags.length; i++) {
         let tag = mangaData.attributes.tags[i];
         
@@ -109,9 +183,14 @@ export const getTags = (mangaData) => {
     }
 
     return tags;
-}
+};
 
-// get links from a manga
+/**
+ * Retrieves external links for a manga.
+ *
+ * @param {object} mangaData The manga data object.
+ * @returns {array} An array of link objects.
+ */
 export const getMangaLinks = (mangaData) => {
     return  mangaData.attributes.links;
-}
+};
