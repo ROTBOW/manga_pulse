@@ -17,7 +17,7 @@ const ChapterList = ({mangaUID}) => {
         let getData = async () => {
             // also need to take into account pagination in the future
             
-            let res = await fetch(`/api/getMangaFeed?uid=${mangaUID}&order=${order}&langs=${langs}`)
+            let res = await fetch(`/api/getMangaFeed?uid=${mangaUID}&order=${order}&langs=${langs}&offset=0`)
             let data = await res.json()
             setChapters(data.data)
         }

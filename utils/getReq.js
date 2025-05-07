@@ -88,10 +88,11 @@ export const getMangaLimitedData = async (UID) => {
 }
 
 // gets the vol and chapters of a manga by its UID
-export const getMangaChapters = async (UID, order='desc', langs=[]) => {
+export const getMangaChapters = async (UID, order='desc', langs=[], offset=0) => {
     let url = `https://api.mangadex.org/manga/${UID}/feed?`;
     let params = {
         limit: 100,
+        offset: offset,
         includeFutureUpdates: 1,
         'includes[]': ['scanlation_group', 'user'],
         'translatedLanguage[]': langs,
