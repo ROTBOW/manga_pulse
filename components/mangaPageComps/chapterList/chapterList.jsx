@@ -4,26 +4,58 @@ import ListVol from "../chapterListVol/chapterListVol";
 import { useState, useEffect } from 'react';
 
 import LoadingSpinner from "@/components/loadingSpinner/loadingSpinner";
-import { LANGPREFS } from "@/utils/enums";
+import { usePreferences } from "@/components/navbarComps/preferencesProvider";
 
 
 const ChapterList = ({mangaUID}) => {
     const [chapters, setChapters] = useState([]);
     const [order, setOrder] = useState('desc');
     
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+    const {langs, preferencesReady} = usePreferences();
+
     useEffect(() => {
-        let langs = localStorage.getItem(LANGPREFS) || JSON.stringify([]);
-        
-        let getData = async () => {
-            // also need to take into account pagination in the future
-            
-            let res = await fetch(`/api/getMangaFeed?uid=${mangaUID}&order=${order}&langs=${langs}`)
-            let data = await res.json()
-            setChapters(data.data)
-        }
+        if (!preferencesReady) return;
+
+        const controller = new AbortController();
+
+        const getData = async () => {
+            setLoading(true);
+            setError('');
+            setChapters([]);
+
+            try {
+                const query = new URLSearchParams({
+                    uid: mangaUID,
+                    order: order,
+                    langs: JSON.stringify(langs)
+                });
+                const res = await fetch(`/api/getMangaFeed?${query}`, {
+                    signal: controller.signal
+                });
+
+                if (!res.ok) throw new Error('Could not load chapters.');
+
+                const data = await res.json();
+
+                if (!Array.isArray(data.data)) throw new Error('Invalid chapter response.');
+                if (controller.signal.aborted) return;
+
+                setChapters(data.data);
+            } catch (error) {
+                if (!controller.signal.aborted) {
+                    setError('Could not load chapters. Try changing your preferences again.');
+                }
+            } finally {
+                if (!controller.signal.aborted) setLoading(false);
+            }
+        };
 
         getData();
-    }, [order])
+
+        return () => controller.abort();
+    }, [mangaUID, order, langs, preferencesReady]);
 
     const toggleOrder = () => {
         setOrder(ord => ((ord === 'asc') ? 'desc' : 'asc'));
@@ -55,7 +87,22 @@ const ChapterList = ({mangaUID}) => {
         return volumes;
     }
 
-    if (chapters.length === 0) return <div className="flex w-3/5 h-full items-center justify-center"><LoadingSpinner/></div>;
+    if (loading) {
+        return (
+            <div className="flex w-full md:w-3/5 items-center justify-center">
+                <LoadingSpinner />
+            </div>
+        );
+    }
+
+    if (error || chapters.length === 0) {
+        return (
+            <p className="w-full md:w-3/5 p-4" role="status">
+                {error || 'No chapters available in your selected languages.'}
+            </p>
+        );
+    }
+
     return(
         <>
             <div className="hidden md:block">

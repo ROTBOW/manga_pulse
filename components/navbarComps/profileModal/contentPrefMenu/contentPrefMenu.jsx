@@ -1,34 +1,8 @@
 'use client'
-import { CONTENTPREFS } from "@/utils/enums";
-import { useEffect, useState, useRef } from "react";
+import { usePreferences } from "../../preferencesProvider";
 
 const ContentPrefMenu = ({resetView}) => {
-    // get prefs from localstorage for our default, if nothing is saved we use the default
-    const prefs = localStorage.getItem(CONTENTPREFS);
-    const [contentPrefs, setContentPrefs] = useState(
-        (prefs !== null) ?
-        JSON.parse(prefs) :
-        {
-            safe: true,
-            suggestive: true,
-            erotica: false,
-            pornographic: false
-        }
-    );
-    
-    const contentPrefsRef = useRef(contentPrefs);
-
-    useEffect(() => {
-        // Update the ref whenever contentPrefs changes
-        contentPrefsRef.current = contentPrefs;
-    }, [contentPrefs]);
-
-    useEffect(() => { 
-        return () => {
-            // On dismount (whenever the menu is closed) save the settings
-            localStorage.setItem(CONTENTPREFS, JSON.stringify(contentPrefsRef.current))
-        }
-    }, []);
+    const {contentPrefs, setContentPrefs} = usePreferences();
 
     return (
         <>
@@ -90,7 +64,7 @@ const ContentPrefMenu = ({resetView}) => {
             </label>
 
         </div>
-        <p className="text-xs italic text-white/45 font-robotoCondensed">Give it a few seconds then refresh to see changes</p>
+        <p className="text-xs italic text-white/45 font-robotoCondensed">Changes apply automatically.</p>
         </>
     )
 };

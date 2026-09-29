@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import latestChaptersSkeleton from "@/skeletonData/latestChaptersSkeleton";
-import { LANGPREFS } from "@/utils/enums";
+import { usePreferences } from "@/components/navbarComps/preferencesProvider";
 
 
 const LateChapItem = ({chapter}) => {
@@ -57,18 +57,50 @@ const LatestChapters = () => {
     const [chapters, setChapters] = useState(latestChaptersSkeleton);
     const [loading, setLoading] = useState(true);
 
+    const [error, setError] = useState('');
+    const {contentPrefs, langs, preferencesReady} = usePreferences();
+
     useEffect(() => {
-        const langs = localStorage.getItem(LANGPREFS) || '[]';
+        if (!preferencesReady) return;
+
+        const controller = new AbortController();
+
         const fetchChapters = async () => {
-            const res = await fetch(`/api/getLatestChapters?contentRating=${JSON.stringify(contentRatingArray())}&langs=${langs}`)
-            const data = await res.json();
-            
-            setChapters(data);
-            setLoading(false);
-        }
+            setLoading(true);
+            setError('');
+            setChapters(latestChaptersSkeleton);
+
+            try {
+                const query = new URLSearchParams({
+                    contentRating: JSON.stringify(contentRatingArray(contentPrefs)),
+                    langs: JSON.stringify(langs)
+                });
+                const res = await fetch(`/api/getLatestChapters?${query}`, {
+                    signal: controller.signal
+                });
+
+                if (!res.ok) throw new Error('Could not load chapters.');
+
+                const data = await res.json();
+
+                if (!Array.isArray(data)) throw new Error('Invalid chapter response.');
+                if (controller.signal.aborted) return;
+
+                setChapters(data);
+            } catch (error) {
+                if (!controller.signal.aborted) {
+                    setChapters([]);
+                    setError('Could not load chapters. Try changing your preferences again.');
+                }
+            } finally {
+                if (!controller.signal.aborted) setLoading(false);
+            }
+        };
 
         fetchChapters();
-    }, []);
+
+        return () => controller.abort();
+    }, [contentPrefs, langs, preferencesReady]);
 
     const getXtoYChapters = (x, y) => {
         let olItems = [];
@@ -88,6 +120,11 @@ const LatestChapters = () => {
     return (
         <div className="flex flex-col items-center mt-14 w-11/12 sm:w-4/5 max-w-7xl">
             <h2 className="w-full font-sigmarOne text-rose-500 text-2xl">Latest Chapters</h2>
+            {!loading && (error || chapters.length === 0) && (
+                <p className="mt-4 font-robotoCondensed" role="status">
+                    {error || 'No chapters match your preferences.'}
+                </p>
+            )}
             <section className="mt-4 w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 <ol className={olClass}>
                     {

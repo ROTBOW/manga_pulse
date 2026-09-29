@@ -7,25 +7,60 @@ import Link from "next/link";
 import popTitlesSkeleton from "@/skeletonData/popTitlesSkeleton";
 import { contentRatingArray } from "@/utils/miscFuncs";
 import noDesc from '@/public/images/noDesc.png';
+import { usePreferences } from '@/components/navbarComps/preferencesProvider';
 
 
 const Carousel = () => {
     const [mangas, setMangas] = useState(popTitlesSkeleton);
     const [curPage, setCurPage] = useState(0);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+    const {contentPrefs, preferencesReady} = usePreferences();
 
     useEffect(() => {
+        if (!preferencesReady) return;
+
+        const controller = new AbortController();
+
         const fetchManga = async () => {
-            const res = await fetch(`/api/getTopTitles?contentRating=${JSON.stringify(contentRatingArray())}`);
-            const data = await res.json();
-            setMangas(data.data);
-            setLoading(false);
-        }
+            setLoading(true);
+            setError('');
+            setMangas(popTitlesSkeleton);
+            setCurPage(0);
+
+            try {
+                const query = new URLSearchParams({
+                    contentRating: JSON.stringify(contentRatingArray(contentPrefs))
+                });
+                const res = await fetch(`/api/getTopTitles?${query}`, {
+                    signal: controller.signal
+                });
+
+                if (!res.ok) throw new Error('Could not load titles.');
+
+                const data = await res.json();
+
+                if (!Array.isArray(data.data)) throw new Error('Invalid title response.');
+                if (controller.signal.aborted) return;
+
+                setMangas(data.data);
+                setCurPage(0);
+            } catch (error) {
+                if (!controller.signal.aborted) {
+                    setError('Could not load titles. Try changing your preferences again.');
+                }
+            } finally {
+                if (!controller.signal.aborted) setLoading(false);
+            }
+        };
 
         fetchManga();
-    }, [])
+        return () => controller.abort();
+    }, [contentPrefs, preferencesReady]);
 
     useEffect(() => {
+        if (loading || mangas.length === 0) return;
+
         const inter = setInterval(() => {
             setCurPage(idx => {
                 if (mangas.length > idx + 1) {
@@ -39,7 +74,7 @@ const Carousel = () => {
         return () => {
             clearInterval(inter);
         }
-    }, [curPage])
+    }, [curPage, mangas.length, loading]);
     
     const genTiles = () => {
         let tiles = [];
@@ -73,6 +108,14 @@ const Carousel = () => {
         }
 
         return tiles
+    }
+
+    if (error || mangas.length === 0) {
+        return (
+            <div className="mt-24 p-6 font-robotoCondensed" role="status">
+                {error || 'No titles match your content preferences.'}
+            </div>
+        );
     }
 
     return (

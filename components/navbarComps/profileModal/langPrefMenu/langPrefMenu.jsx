@@ -2,19 +2,13 @@
 
 import langToCode from "@/utils/langToCode";
 import Flag from 'react-world-flags';
-import { useEffect, useState } from "react";
+import { usePreferences } from "../../preferencesProvider";
 import langToCountry from "@/utils/langToCountry";
-import { LANGPREFS } from "@/utils/enums";
 
 
 
 const LangPrefMenu = ({resetView}) => {
-    const prefs = localStorage.getItem(LANGPREFS);
-    const [langs, setLangs] = useState(
-        (prefs !== null) ?
-        JSON.parse(prefs) :
-        []
-    );
+    const {langs, setLangs} = usePreferences();
 
     /**
      * Updates state slice "langs" by adding or removing a lang code on toggle.
@@ -27,10 +21,6 @@ const LangPrefMenu = ({resetView}) => {
             return [...oldData, code];
         });
     }
-
-    useEffect(() => {
-        localStorage.setItem(LANGPREFS, JSON.stringify(langs));
-    }, [langs])
 
     const genOptions = () => {
         let options = [];
@@ -69,7 +59,7 @@ const LangPrefMenu = ({resetView}) => {
             </ol>
 
         </div>
-        <p className="mt-0.5 text-xs italic text-white/45 font-robotoCondensed">Give it a few seconds then refresh to see changes</p>
+        <p className="mt-0.5 text-xs italic text-white/45 font-robotoCondensed">Changes apply automatically.</p>
         </>
     )
 };

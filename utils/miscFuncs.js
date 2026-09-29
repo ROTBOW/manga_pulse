@@ -48,8 +48,7 @@ export const timeSince = (timestamp) => {
  * 'suggestive']`. If all preferences are disabled, it returns `['safe', 'suggestive', 'erotica',
  * 'pornographic']`. Otherwise, it builds the array based on the selected preferences
  */
-export const contentRatingArray = () => {
-    let rating = JSON.parse(localStorage.getItem(CONTENTPREFS));
+export const contentRatingArray = (rating = JSON.parse(localStorage.getItem(CONTENTPREFS))) => {
     
     if (rating === null) { // if they haven't set anything default
         return ['safe', 'suggestive']
