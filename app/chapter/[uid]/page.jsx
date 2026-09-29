@@ -3,20 +3,25 @@
 import ChapterDetailsBar from "@/components/chapterReaderComps/chapterDetailsBar/chapterDetailsBar";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import LoadingSpinner from "@/components/loadingSpinner/loadingSpinner";
-import { getMangaUID } from "@/utils/dataManipulation/chapter";
+import { getChapterNumber, getMangaUID } from "@/utils/dataManipulation/chapter";
 import Navbar from "@/components/navbarComps/navbar/navbar";
 import { useEffect, useState } from "react";
 import { LANGPREFS } from "@/utils/enums";
 
 
 
-
-// const idxClamp = (idx) => { // going to use this to clamp the idx when reaching end of array
-
+/**
+ * The function `chapterOffsetClamp` takes a chapter number as input and returns the offset value by
+ * rounding down to the nearest hundred.
+ * @returns The function `chapterOffsetClamp` returns the offset value calculated based on the input
+ * chapter number.
+ */
+// const chapterOffsetClamp = (chapNumber) => {
+//     const number = Number(chapNumber);
+//     const offset = Math.floor(number / 100) * 100;
+//     return offset;
 // }
 
-// will have to make a request to the other chapters of the manga so we can go to their page at a chapter's end
-// and be able to send the user back to the manga show page if they end the manga.
 
 const Reader = () => {
     // next nav consts
@@ -55,8 +60,9 @@ const Reader = () => {
             const resChapter = await fetch(`/api/getChapterData/${params.uid}`);
             const chapterData = (await resChapter.json()).data;
             setChapterData(chapterData);
-            
-            const resFeed = await fetch(`/api/getMangaFeed?uid=${getMangaUID(chapterData)}&order=asc&langs=${langs}`)
+                    
+            // need to update this to a dif api call.
+            const resFeed = await fetch(`/api/getMangaFeed?uid=${getMangaUID(chapterData)}&order=asc&langs=${langs}&offset=${chapterOffsetClamp(getChapterNumber(chapterData))}`)
             setFeedData((await resFeed.json()).data);
             
         };
@@ -93,7 +99,10 @@ const Reader = () => {
     }, [imageData]);
 
     /**
-     * updates the page number in the URL query parameters and updates the state index accordingly.
+     * Navigates to the next or previous chapter based on the provided direction.
+     * If no direction is specified, it defaults to moving forward (next chapter).
+     * Handles boundary conditions when reaching the first or last chapters.
+     * @param {number} direction - The navigation direction; 1 for next, -1 for previous. Defaults to 1.
      */
     const nextPage = ( direction = 1 ) => {
         return () => {
@@ -141,18 +150,21 @@ const Reader = () => {
     const genNextURL = (direction = true) => {
         if (feedData === null) return '#'; // if the feed isn't loaded we do nothing
 
-        // based on direction we change the order that we loop over the chapters
-        // thus, changing if the gen-ed url will go to the next or prev chapter
-        const feed = (direction === true) ? feedData : [...feedData].reverse();
+        console.log(feedData);
+        
 
-        // this will gen the url for the next chapter - or redirect to the manga showpage
-        // if there is only one chapter / we're on the last chapter
-        for (let i = 1; i < feed.length; i++) {
-            if (feed[i-1].id === params.uid) {
-                return `/chapter/${feed[i].id}${ (direction === false) ? `?page=${feed[i].attributes.pages-1}` : ''}`
+        // // based on direction we change the order that we loop over the chapters
+        // // thus, changing if the gen-ed url will go to the next or prev chapter
+        // const feed = (direction === true) ? feedData : [...feedData].reverse();
+
+        // // this will gen the url for the next chapter - or redirect to the manga showpage
+        // // if there is only one chapter / we're on the last chapter
+        // for (let i = 1; i < feed.length; i++) {
+        //     if (feed[i-1].id === params.uid) {
+        //         return `/chapter/${feed[i].id}${ (direction === false) ? `?page=${feed[i].attributes.pages-1}` : ''}`
                 
-            }
-        }
+        //     }
+        // }
 
         // case for a manga with only one chapter or at end of chapters
         return `/manga/${getMangaUID(chapterData)}`
