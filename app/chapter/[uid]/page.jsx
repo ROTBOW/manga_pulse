@@ -8,6 +8,7 @@ import Navbar from "@/components/navbarComps/navbar/navbar";
 import { useEffect, useState } from "react";
 import { LANGPREFS } from "@/utils/enums";
 import { useReaderMenu } from "@/components/chapterReaderComps/readerMenuProvider";
+import { getResumePage, saveReadProgress } from "@/utils/readHistory.mjs";
 
 
 
@@ -41,63 +42,91 @@ const Reader = () => {
     const [ hideSpinner, setHideSpinner ] = useState(false);
     const {showMenu, showMenuPreview, toggleMenu} = useReaderMenu();
     const [ idx, setIdx ] = useState(0);
+    const [readerError, setReaderError] = useState('');
 
-    
-    useEffect(() => { // init load useEffect
-        // scroll navbar out of view for the reader
-        const rdr = document.getElementById("rdr");
-        rdr.scrollIntoView({behavior: 'smooth'});
+    useEffect(() => {
+        const controller = new AbortController();
+        const pageParams = new URLSearchParams(window.location.search);
 
-        // get page index - if "page" returns null we're on the first page so load that
-        setIdx(searchParams.get('page') || 0);
-        
-        // get data
-        let langs = localStorage.getItem(LANGPREFS) || JSON.stringify([]);
+        setPages([]);
+        setImageData(null);
+        setChapterData(null);
+        setFeedData(null);
+        setHideSpinner(false);
+        setReaderError('');
+        document.getElementById('rdr')?.scrollIntoView({behavior: 'smooth'});
 
         const fetchData = async () => {
-            const resPages = await fetch(`/api/getChapterPages/${params.uid}`);
-            setImageData(await resPages.json());
+            try {
+                const responses = await Promise.all([
+                    fetch(`/api/getChapterPages/${params.uid}`, {signal: controller.signal}),
+                    fetch(`/api/getChapterData/${params.uid}`, {signal: controller.signal})
+                ]);
 
-            const resChapter = await fetch(`/api/getChapterData/${params.uid}`);
-            const chapterData = (await resChapter.json()).data;
-            setChapterData(chapterData);
-                    
-            // need to update this to a dif api call.
-            const resFeed = await fetch(`/api/getMangaFeed?uid=${getMangaUID(chapterData)}&order=asc&langs=${langs}&offset=${chapterOffsetClamp(getChapterNumber(chapterData))}`)
-            setFeedData((await resFeed.json()).data);
-            
-        };
-        
-        fetchData();
-        
-    }, [])
+                if (responses.some(response => !response.ok)) {
+                    throw new Error('Could not load the chapter.');
+                }
 
+                const [imageData, chapterResponse] = await Promise.all(
+                    responses.map(response => response.json())
+                );
+                if (controller.signal.aborted) return;
 
-    useEffect(() => {// url builder and cacher - runs when we update the imageData slice
-        if (imageData === null) return; // if we don't have the data yet we ignore
+                const chapterData = chapterResponse.data;
+                const pageFiles = imageData.chapter?.data;
 
-        // build urls and add them to pages array
-        setPages( _ => {
-            let pageUrls = [];
+                if (!chapterData || !Array.isArray(pageFiles) || pageFiles.length === 0) {
+                    throw new Error('This chapter has no readable pages.');
+                }
 
-            for (let i = 0; i < imageData.chapter.data.length; i++) {
-                let url = imageData.baseUrl;
-                url += "/data/";
-                url += imageData.chapter.hash;
-                url += `/${imageData.chapter.data[i]}`;
+                const resumePage = getResumePage(params.uid, pageParams.get('page'), pageFiles.length);
+                const pageUrls = pageFiles.map(fileName => {
+                    return `${imageData.baseUrl}/data/${imageData.chapter.hash}/${fileName}`;
+                });
 
-                // add url to the pages
-                pageUrls.push(url);
+                // Metadata and resume position are ready before any page can report a load.
+                setIdx(resumePage);
+                setChapterData(chapterData);
+                setImageData(imageData);
+                setPages(pageUrls);
+                pageParams.set('page', resumePage);
+                router.replace(`?${pageParams.toString()}`, {scroll: false});
 
-                // preload image from url
-                const img = new Image();
-                img.src = url;
+                let langs = '[]';
+
+                try {
+                    langs = localStorage.getItem(LANGPREFS) || '[]';
+                } catch {
+                    // Reading remains available when browser storage is blocked.
+                }
+
+                const query = new URLSearchParams({
+                    uid: getMangaUID(chapterData),
+                    order: 'asc',
+                    langs,
+                    offset: chapterOffsetClamp(getChapterNumber(chapterData))
+                });
+                const resFeed = await fetch(`/api/getMangaFeed?${query}`, {
+                    signal: controller.signal
+                });
+
+                if (resFeed.ok) {
+                    const feed = await resFeed.json();
+                    if (!controller.signal.aborted) setFeedData(feed.data);
+                }
+            } catch (error) {
+                if (!controller.signal.aborted) {
+                    setReaderError(error.message);
+                    setHideSpinner(true);
+                }
             }
+        };
 
-            return pageUrls;
-        });
+        fetchData();
 
-    }, [imageData]);
+        // Strict Mode, Back, and chapter changes must not leave old loads running.
+        return () => controller.abort();
+    }, [params.uid, router]);
 
     /**
      * Navigates to the next or previous chapter based on the provided direction.
@@ -107,9 +136,10 @@ const Reader = () => {
      */
     const nextPage = ( direction = 1 ) => {
         return () => {
+            if (!chapterData || pages.length === 0) return;
+
             const param = new URLSearchParams(searchParams);
-            let num = param.get('page');
-            num = Number(num);
+            const num = Number(idx);
             
             // check if we've gone off the page count
             if ((num+direction) <= -1 || num+direction >= chapterData.attributes.pages)  {                
@@ -122,8 +152,9 @@ const Reader = () => {
             router.replace(`?${param.toString()}`, {scroll: false})
 
             // set the new idx - thus changing the page and trigger the spinner again for loading
+            saveReadProgress(params.uid, getMangaUID(chapterData), num + direction);
             setIdx(num+direction);
-            setHideSpinner(true);
+            setHideSpinner(false);
         }
     }
 
@@ -132,6 +163,9 @@ const Reader = () => {
      * replaces the current URL without scrolling.
      */
     const goToPage = (idx) => {
+        if (!chapterData || !pages[idx]) return;
+
+        saveReadProgress(params.uid, getMangaUID(chapterData), idx);
         const param = new URLSearchParams(searchParams);
         param.set('page', idx);
         router.replace(`?${param.toString()}`, {scroll: false})
@@ -240,8 +274,10 @@ const Reader = () => {
                     </ol>
                 </div>
 
-                {
+                {readerError && <p role="alert">{readerError}</p>}
+                {pages[idx] && chapterData?.id === params.uid && (
                     <img
+                        key={`${params.uid}:${idx}:${pages[idx]}`}
                         src={pages[idx]}
                         width="1000"
                         height="1500"
@@ -249,9 +285,11 @@ const Reader = () => {
                         onLoad={() => {
                             setHideSpinner(true);
                             showMenuPreview();
+
+                            saveReadProgress(params.uid, getMangaUID(chapterData), Number(idx));
                         }}
                     />
-                } 
+                )}
                 <div className={`${hideSpinner ? 'hidden' : ''} flex absolute h-full items-center justify-center`}><LoadingSpinner/></div>                
             </div>
             <div></div>

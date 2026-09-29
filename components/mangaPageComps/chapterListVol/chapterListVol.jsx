@@ -12,7 +12,7 @@ import userIcon from '@/public/icons/person.svg';
 import groupIcon from '@/public/icons/group.svg';
 
 
-const ListVol = ({volume}) => {
+const ListVol = ({volume, readChapters}) => {
     const [showChaps, setShowChaps] = useState(true);
     
     
@@ -27,10 +27,28 @@ const ListVol = ({volume}) => {
         let chaps = [];
         for (let i = 0; i < volume.length; i++) {
             let chapter = volume[i]
+            const hasRead = readChapters.has(chapter.id);
             chaps.push(
                 <li key={i} className="p-1 bg-gray-800 mx-6 mb-3 rounded-md">
                     <div className="flex w-full justify-between">
                         <Link href={`/chapter/${chapter.id}`} className="flex items-center w-1/2 truncate">
+                            <span
+                                title={hasRead ? 'Read — saved progress' : 'Not read'}
+                                className={`mr-2 shrink-0 ${hasRead ? 'text-emerald-400' : 'text-gray-400'}`}
+                            >
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    className="size-4"
+                                    aria-hidden="true"
+                                >
+                                    <circle cx="12" cy="12" r="9" />
+                                    {hasRead && <path d="m7 12 3 3 7-7" />}
+                                </svg>
+                                <span className="sr-only">{hasRead ? 'Read' : 'Not read'}</span>
+                            </span>
                             <Flag code={ langToCountry[getChapterLang(chapter)] } className="h-4 w-6 object-cover rounded-sm mr-1"/>
                             Ch. {getChapterNumber(chapter)}
                             { (getChapterTitle(chapter)) ? (` - ${getChapterTitle(chapter)}`) : '' }

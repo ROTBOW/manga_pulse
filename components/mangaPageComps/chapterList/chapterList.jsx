@@ -5,9 +5,26 @@ import { useState, useEffect } from 'react';
 
 import LoadingSpinner from "@/components/loadingSpinner/loadingSpinner";
 import { usePreferences } from "@/components/navbarComps/preferencesProvider";
+import { getReadHistory } from "@/utils/readHistory.mjs";
 
 
 const ChapterList = ({mangaUID}) => {
+    const [readChapters, setReadChapters] = useState(new Set());
+
+    useEffect(() => {
+        const updateReadChapters = () => {
+            setReadChapters(new Set(getReadHistory().map(chapter => chapter.chapterId)));
+        };
+
+        updateReadChapters();
+        window.addEventListener('focus', updateReadChapters);
+        window.addEventListener('storage', updateReadChapters);
+
+        return () => {
+            window.removeEventListener('focus', updateReadChapters);
+            window.removeEventListener('storage', updateReadChapters);
+        };
+    }, [mangaUID]);
     const [chapters, setChapters] = useState([]);
     const [order, setOrder] = useState('desc');
     
@@ -81,7 +98,7 @@ const ChapterList = ({mangaUID}) => {
         for (let i = 0; i < vols.length; i++) {
             let volume = vols[i]
             volumes.push(
-                <ListVol volume={volume} key={i}/>
+                <ListVol volume={volume} readChapters={readChapters} key={i}/>
             )
         }
 
