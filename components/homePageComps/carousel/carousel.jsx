@@ -50,7 +50,7 @@ const Carousel = () => {
             tiles.push(
                 <li
                     key={idx}
-                    className="mx-1 min-w-0 flex-1 bg-rose-200"
+                    className={`relative mx-1 min-w-0 flex-1 bg-rose-200 transition-transform duration-300 ease-out motion-reduce:transition-none ${isSelected ? 'z-10 scale-105' : 'scale-100'}`}
                     style={{height: '17rem'}}
                 >
                     <button
@@ -77,7 +77,7 @@ const Carousel = () => {
 
     return (
         <>
-            <ol className="w-full h-1/4 flex overflow-hidden">
+            <ol className="w-full h-1/4 py-2 flex overflow-hidden">
                 
                 {
                     genTiles()
