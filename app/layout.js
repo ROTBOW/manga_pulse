@@ -1,4 +1,5 @@
 import localFont from "next/font/local";
+import PreferencesProvider from "@/components/navbarComps/preferencesProvider";
 import "./globals.css";
 
 const sigmarOne = localFont({
@@ -27,7 +28,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${sigmarOne.variable} ${robotoCondensed.variable} antialiased`}
       >
-        {children}
+        <PreferencesProvider>
+          {children}
+        </PreferencesProvider>
       </body>
     </html>
   );

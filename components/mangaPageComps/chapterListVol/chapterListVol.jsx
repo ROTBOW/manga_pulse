@@ -31,7 +31,7 @@ const ListVol = ({volume}) => {
                 <li key={i} className="p-1 bg-gray-800 mx-6 mb-3 rounded-md">
                     <div className="flex w-full justify-between">
                         <Link href={`/chapter/${chapter.id}`} className="flex items-center w-1/2 truncate">
-                            <Flag code={ langToCountry[getChapterLang(chapter)] } className="h-4 w-6 object-cover rounded mr-1"/>
+                            <Flag code={ langToCountry[getChapterLang(chapter)] } className="h-4 w-6 object-cover rounded-sm mr-1"/>
                             Ch. {getChapterNumber(chapter)}
                             { (getChapterTitle(chapter)) ? (` - ${getChapterTitle(chapter)}`) : '' }
                         </Link>

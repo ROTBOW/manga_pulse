@@ -41,12 +41,12 @@ const ProfileModal = ({hideModal}) => {
     return (
         <div className="absolute">
             <div
-                className="fixed w-screen h-screen bg-black top-0 left-0 bg-opacity-50 z-40"
+                className="fixed w-screen h-screen bg-black/50 top-0 left-0 z-40"
                 onClick={() => {hideModal(false)}}
             />
 
             <div 
-                className="z-50 fixed bg-gray-800 p-2 w-80 rounded mt-4 flex flex-col items-center"
+                className="z-50 fixed bg-gray-800 p-2 w-80 rounded-sm mt-4 flex flex-col items-center"
                 style={{right: "17%"}}
             >
                 {

@@ -50,7 +50,7 @@ const LinksSectionItem = ({title, id, idOrUrl}) => {
 
     
     return (
-        <li className="px-1 bg-gray-800 w-fit rounded text-sm md:text-md text-nowrap m-1 hover:bg-gray-600">
+        <li className="px-1 bg-gray-800 w-fit rounded-sm text-sm md:text-md text-nowrap m-1 hover:bg-gray-600">
             <a target="_blank" rel="noopener noreferrer" href={link}>
                 {title}
             </a>

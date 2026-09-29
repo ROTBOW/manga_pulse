@@ -49,7 +49,7 @@ const Navbar = ({displayType}) => {
                 </div>
                 {/* Need to show this again when I other pages for a menu to be useful */}
                 {/* ^ has opacity-0 class - need to remove that later */}
-                <Link href='/'><h1 className='font-bold bg-opacity-90 p-1 text-2xl text-rose-500 drop-shadow-xl'>MangaPulse</h1></Link>
+                <Link href='/'><h1 className='font-bold p-1 text-2xl text-rose-500 drop-shadow-brand'>MangaPulse</h1></Link>
                 
             </div>
     

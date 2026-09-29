@@ -223,11 +223,13 @@ export const getLatestChapters = async (contentPref=['safe', 'suggestive'], lang
     let forwardData = [];
     let url2 = 'https://api.mangadex.org/manga?';
 
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < Math.min(30, data.length); i++) {
         let mangaUID = getMangaUID(data[i]);
         uids.add(mangaUID);
         forwardData.push(data[i]);
     }
+
+    if (forwardData.length === 0) return JSON.stringify([]);
 
     let params2 = {
         limit: 100,
