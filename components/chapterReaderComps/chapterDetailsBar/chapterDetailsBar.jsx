@@ -33,8 +33,40 @@ const ChapterDetailsBar = ({ chapterData, feedData, prevUrl, nextUrl }) => {
 
             </section>
             <section className="w-[95%] my-2 flex justify-between">
-                <Link href={prevUrl} className="w-1/2 mr-3 bg-rose-500 rounded-md text-center text-black transition-opacity opacity-60 hover:opacity-100">⟵</Link>
-                <Link href={nextUrl} className="w-1/2 ml-3 bg-rose-500 rounded-md text-center text-black transition-opacity opacity-60 hover:opacity-100">⟶</Link>
+                {prevUrl ? (
+                    <Link
+                        href={prevUrl}
+                        aria-label="Previous chapter"
+                        className="w-1/2 mr-3 bg-rose-500 rounded-md text-center text-black transition-opacity opacity-60 hover:opacity-100"
+                    >
+                        ⟵
+                    </Link>
+                ) : (
+                    <span
+                        aria-label="No previous chapter available"
+                        aria-disabled="true"
+                        className="w-1/2 mr-3 bg-rose-500 rounded-md text-center text-black opacity-30"
+                    >
+                        ⟵
+                    </span>
+                )}
+                {nextUrl ? (
+                    <Link
+                        href={nextUrl}
+                        aria-label="Next chapter"
+                        className="w-1/2 ml-3 bg-rose-500 rounded-md text-center text-black transition-opacity opacity-60 hover:opacity-100"
+                    >
+                        ⟶
+                    </Link>
+                ) : (
+                    <span
+                        aria-label="No next chapter available"
+                        aria-disabled="true"
+                        className="w-1/2 ml-3 bg-rose-500 rounded-md text-center text-black opacity-30"
+                    >
+                        ⟶
+                    </span>
+                )}
             </section>
             </>
         )

@@ -6,23 +6,10 @@ import LoadingSpinner from "@/components/loadingSpinner/loadingSpinner";
 import { getChapterNumber, getMangaUID } from "@/utils/dataManipulation/chapter";
 import Navbar from "@/components/navbarComps/navbar/navbar";
 import { useEffect, useState } from "react";
-import { LANGPREFS } from "@/utils/enums";
+import { findNextChapter, findPreviousChapter } from "@/utils/chapterNavigation.mjs";
 import { useReaderMenu } from "@/components/chapterReaderComps/readerMenuProvider";
 import { getResumePage, saveReadProgress } from "@/utils/readHistory.mjs";
 
-
-
-/**
- * The function `chapterOffsetClamp` takes a chapter number as input and returns the offset value by
- * rounding down to the nearest hundred.
- * @returns The function `chapterOffsetClamp` returns the offset value calculated based on the input
- * chapter number.
- */
-const chapterOffsetClamp = (chapNumber) => {
-    const number = Number(chapNumber);
-    const offset = Math.floor(number / 100) * 100;
-    return offset;
-}
 
 
 const Reader = () => {
@@ -92,28 +79,36 @@ const Reader = () => {
                 pageParams.set('page', resumePage);
                 router.replace(`?${pageParams.toString()}`, {scroll: false});
 
-                let langs = '[]';
+                const chapters = [];
+                let offset = 0;
 
-                try {
-                    langs = localStorage.getItem(LANGPREFS) || '[]';
-                } catch {
-                    // Reading remains available when browser storage is blocked.
-                }
+                // Offsets count releases, not chapter numbers. Continue across feed pages
+                // until the current chapter and its next readable chapter are available.
+                while (!controller.signal.aborted) {
+                    const query = new URLSearchParams({
+                        uid: getMangaUID(chapterData),
+                        order: 'asc',
+                        langs: JSON.stringify([chapterData.attributes.translatedLanguage]),
+                        offset
+                    });
+                    const resFeed = await fetch(`/api/getMangaFeed?${query}`, {
+                        signal: controller.signal
+                    });
 
-                const query = new URLSearchParams({
-                    uid: getMangaUID(chapterData),
-                    order: 'asc',
-                    langs,
-                    offset: chapterOffsetClamp(getChapterNumber(chapterData))
-                });
-                const resFeed = await fetch(`/api/getMangaFeed?${query}`, {
-                    signal: controller.signal
-                });
+                    if (!resFeed.ok) throw new Error('Could not load the next chapter.');
 
-                if (resFeed.ok) {
                     const feed = await resFeed.json();
-                    if (!controller.signal.aborted) setFeedData(feed.data);
+                    if (controller.signal.aborted) return;
+                    if (!Array.isArray(feed.data)) throw new Error('Invalid chapter feed.');
+
+                    chapters.push(...feed.data);
+                    offset += feed.data.length;
+
+                    if (findNextChapter(chapters, chapterData)) break;
+                    if (feed.data.length === 0 || offset >= feed.total) break;
                 }
+
+                setFeedData(chapters);
             } catch (error) {
                 if (!controller.signal.aborted) {
                     setReaderError(error.message);
@@ -141,9 +136,25 @@ const Reader = () => {
             const param = new URLSearchParams(searchParams);
             const num = Number(idx);
             
-            // check if we've gone off the page count
-            if ((num+direction) <= -1 || num+direction >= chapterData.attributes.pages)  {                
-                router.push(genNextURL( (direction > 0) ? true : false ))
+            if (num + direction < 0) {
+                const previousChapterUrl = genPreviousURL();
+
+                if (previousChapterUrl) {
+                    saveReadProgress(params.uid, getMangaUID(chapterData), num);
+                    router.push(previousChapterUrl);
+                }
+
+                return;
+            }
+
+            if (num + direction >= pages.length) {
+                const nextChapterUrl = genNextURL();
+
+                if (nextChapterUrl) {
+                    saveReadProgress(params.uid, getMangaUID(chapterData), num);
+                    router.push(nextChapterUrl);
+                }
+
                 return;
             }
 
@@ -175,35 +186,24 @@ const Reader = () => {
         setHideSpinner(false);
     }
 
-    /**
-     * The function `genNextURL` generates the URL for the next or previous chapter of a manga based on the
-     * direction provided, considering the feed data and current chapter ID.
-     * @returns The `genNextURL` function returns a URL string that either points to the next chapter in a
-     * manga series or redirects to the manga showpage if there is only one chapter or if the current
-     * chapter is the last one.
-     */
-    const genNextURL = (direction = true) => {
-        if (feedData === null) return '#'; // if the feed isn't loaded we do nothing
+    const genPreviousURL = () => {
+        if (!chapterData || !feedData) return null;
 
-        console.log(feedData);
-        
+        const previousChapter = findPreviousChapter(feedData, chapterData);
+        if (!previousChapter) return null;
 
-        // // based on direction we change the order that we loop over the chapters
-        // // thus, changing if the gen-ed url will go to the next or prev chapter
-        // const feed = (direction === true) ? feedData : [...feedData].reverse();
+        const lastPage = Math.max(0, previousChapter.attributes.pages - 1);
+        return `/chapter/${previousChapter.id}?page=${lastPage}`;
+    };
 
-        // // this will gen the url for the next chapter - or redirect to the manga showpage
-        // // if there is only one chapter / we're on the last chapter
-        // for (let i = 1; i < feed.length; i++) {
-        //     if (feed[i-1].id === params.uid) {
-        //         return `/chapter/${feed[i].id}${ (direction === false) ? `?page=${feed[i].attributes.pages-1}` : ''}`
-                
-        //     }
-        // }
+    const genNextURL = () => {
+        if (!chapterData || !feedData) return null;
 
-        // case for a manga with only one chapter or at end of chapters
-        return `/manga/${getMangaUID(chapterData)}`
-    }
+        const nextChapter = findNextChapter(feedData, chapterData);
+
+        // A chapter transition starts at page one even if that chapter has history.
+        return nextChapter ? `/chapter/${nextChapter.id}?page=0` : null;
+    };
 
     /**
      * 
@@ -248,7 +248,7 @@ const Reader = () => {
     return (
         <div className="flex flex-col items-center">
             <Navbar displayType='block'/>
-            <ChapterDetailsBar chapterData={chapterData} feedData={feedData} prevUrl={genNextURL(false)} nextUrl={genNextURL()}/>
+            <ChapterDetailsBar chapterData={chapterData} feedData={feedData} prevUrl={genPreviousURL()} nextUrl={genNextURL()}/>
 
             <div id="rdr" className="w-full h-screen flex flex-col items-center">
                 <div className="absolute w-full flex justify-between">
