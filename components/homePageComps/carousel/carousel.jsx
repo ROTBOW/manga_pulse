@@ -48,7 +48,7 @@ const Carousel = () => {
             tiles.push(
             <li
                 key={idx}
-                className={`${loading ? 'animate-pulse' : ''} bg-rose-700 mx-1 transition-all hover:animate-pulse hover:scale-105 hover:opacity-100 hover:cursor-pointer ${ idx === curPage ? '!opacity-100 animate-pulse scale-105' : 'opacity-30'}`}
+                className={`${loading ? 'animate-pulse' : ''} bg-rose-700 mx-1 transition-all hover:animate-pulse hover:scale-105 hover:opacity-100 hover:cursor-pointer ${ idx === curPage ? 'opacity-100! animate-pulse scale-105' : 'opacity-30'}`}
                 style={{width: '10%', height: '17rem'}}
                 onClick={(e) => {setCurPage((idx))}}
             >
@@ -76,11 +76,11 @@ const Carousel = () => {
                     genTiles()
                 }    
             </ol>
-            <h1 className="font-sigmarOne -mt-14 text-2xl z-10 bg-gray-800 rounded-t px-2">Up and Coming</h1>
+            <h1 className="font-sigmarOne -mt-14 text-2xl z-10 bg-gray-800 rounded-t-sm px-2">Up and Coming</h1>
             <article className="w-5/6 sm:w-4/6 h-40 p-2 bg-gray-800 z-10 rounded-xl flex flex-col">
                 <div className="flex justify-between mb-1 border-b border-rose-500">
                     <Link href={`/manga/${mangas[curPage].id}`} className="flex items-center" style={{width: "84%", height: "3rem"}}><h3 className="font-sigmarOne text-rose-500 truncate" title={getENTitle(mangas[curPage])}>{getENTitle(mangas[curPage])}</h3></Link>
-                    <Link href={`/manga/${mangas[curPage].id}`} className="hidden sm:block font-robotoCondensed w-30 h-8 text-center underline p-1 hover:text-rose-500">Go To Manga</Link>
+                    <Link href={`/manga/${mangas[curPage].id}`} className="hidden sm:block font-robotoCondensed w-auto h-8 text-center underline p-1 hover:text-rose-500">Go To Manga</Link>
                 </div>
 
                 {getDesc(mangas[curPage]) !== -1 ?

@@ -1,6 +1,61 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../tailwind.config.mjs";
+
+/* Keep the existing v3 palette and shadow while using the v4 utilities. */
+@theme {
+  --color-amber-400: #fbbf24;
+  --color-amber-900: #78350f;
+  --color-emerald-400: #34d399;
+  --color-emerald-500: #10b981;
+  --color-emerald-900: #064e3b;
+  --color-gray-200: #e5e7eb;
+  --color-gray-400: #9ca3af;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-red-500: #ef4444;
+  --color-red-600: #dc2626;
+  --color-red-950: #450a0a;
+  --color-rose-400: #fb7185;
+  --color-rose-500: #f43f5e;
+  --color-rose-700: #be123c;
+  --color-rose-900: #881337;
+  --color-yellow-500: #eab308;
+}
+
+/* The logo used v3's two-part drop shadow. */
+@utility drop-shadow-brand {
+  filter: drop-shadow(0 20px 13px rgb(0 0 0 / 0.03))
+    drop-shadow(0 8px 5px rgb(0 0 0 / 0.08));
+}
+
+/* Preserve hover-on-tap behavior from v3. */
+@custom-variant hover (&:hover);
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-gray-400);
+    opacity: 1;
+  }
+
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+
+  :disabled {
+    cursor: default;
+  }
+}
 
 :root {
   --background: #191a1c;

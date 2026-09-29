@@ -59,7 +59,7 @@ const MangaPage = async ({ params }) => {
 
         for (let i = 0; i < tagData.length; i++) {
             tags.push(
-                <Link key={i} href="#" className="p-1 w-fit text-nowrap text-xs md:text-sm bg-opacity-30 my-1 md:my-2 mr-1 md:mr-2 bg-emerald-400 rounded-md hover:bg-opacity-80 transition-opacity">
+                <Link key={i} href="#" className="p-1 w-fit text-nowrap text-xs md:text-sm my-1 md:my-2 mr-1 md:mr-2 bg-emerald-400/30 rounded-md hover:bg-emerald-400/80 transition-opacity">
                     {tagData[i].name}
                 </Link>
             )
@@ -133,16 +133,16 @@ const MangaPage = async ({ params }) => {
                     <div className="flex w-full mb-8">
                         <h3 className="mr-5">
                             Author<br/>
-                            <p className="px-1 w-fit text-rose-500 rounded bg-gray-800 text-center mt-1">{getAuthor(manga)}</p>
+                            <p className="px-1 w-fit text-rose-500 rounded-sm bg-gray-800 text-center mt-1">{getAuthor(manga)}</p>
                         </h3>
                         <h3 className="mr-10">
                             Artist<br/>
-                            <p className="px-1 w-fit text-rose-500 rounded bg-gray-800 text-center mt-1">{getArtist(manga)}</p>
+                            <p className="px-1 w-fit text-rose-500 rounded-sm bg-gray-800 text-center mt-1">{getArtist(manga)}</p>
                         </h3>
 
                         <h2 className={`${getDemographic(manga) !== null ? '' : 'opacity-0'}`}>
                             Demographic<br/>
-                            <p className="px-1 w-fit text-rose-500 rounded bg-gray-800 text-center mt-1">{getDemographic(manga)}</p>
+                            <p className="px-1 w-fit text-rose-500 rounded-sm bg-gray-800 text-center mt-1">{getDemographic(manga)}</p>
                         </h2>
                     </div>
 

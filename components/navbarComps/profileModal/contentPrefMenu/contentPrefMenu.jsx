@@ -35,7 +35,7 @@ const ContentPrefMenu = ({resetView}) => {
         <div className="flex flex-col font-robotoCondensed text-md">
             <button 
                 onClick={() => {resetView(-1)}}
-                className="p-1 bg-gray-700 rounded mb-2"
+                className="p-1 bg-gray-700 rounded-sm mb-2"
             >
                 Back
             </button>
@@ -90,7 +90,7 @@ const ContentPrefMenu = ({resetView}) => {
             </label>
 
         </div>
-        <p className="text-xs italic text-white text-opacity-45 font-robotoCondensed">Give it a few seconds then refresh to see changes</p>
+        <p className="text-xs italic text-white/45 font-robotoCondensed">Give it a few seconds then refresh to see changes</p>
         </>
     )
 };

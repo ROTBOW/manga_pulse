@@ -14,13 +14,13 @@ const LateChapItem = ({chapter}) => {
 
     return (
         <li className="flex p-1 h-20 w-full mb-2 font-robotoCondensed items-center">
-            <Link href={`/manga/${getMangaUID(chapter)}`} className="min-w-14 min-h-20 w-14 h-20 mr-2 bg-rose-700 rounded">
+            <Link href={`/manga/${getMangaUID(chapter)}`} className="min-w-14 min-h-20 w-14 h-20 mr-2 bg-rose-700 rounded-sm">
                 <Image 
                     src={getChapterCoverUrl(chapter)} 
                     width="56" 
                     height="80"
                     alt={`${chapter.title}'s Thumbnail`}
-                    className="w-14 h-full object-cover object-center rounded"
+                    className="w-14 h-full object-cover object-center rounded-sm"
                     style={{}}
                 />
             </Link>

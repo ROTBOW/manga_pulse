@@ -45,7 +45,7 @@ const LangPrefMenu = ({resetView}) => {
                         className="mr-1"
                     />
                     <div className="flex items-center">
-                        <Flag code={langToCountry[v]} className="h-4 w-6 object-cover rounded mr-1"/>
+                        <Flag code={langToCountry[v]} className="h-4 w-6 object-cover rounded-sm mr-1"/>
                         {k}
                     </div>
                 </li>
@@ -59,7 +59,7 @@ const LangPrefMenu = ({resetView}) => {
         <div className="flex flex-col font-robotoCondensed text-md">
             <button 
                 onClick={() => {resetView(-1)}}
-                className="p-1 bg-gray-700 rounded mb-2"
+                className="p-1 bg-gray-700 rounded-sm mb-2"
             >
                 Back
             </button>
@@ -69,7 +69,7 @@ const LangPrefMenu = ({resetView}) => {
             </ol>
 
         </div>
-        <p className="mt-0.5 text-xs italic text-white text-opacity-45 font-robotoCondensed">Give it a few seconds then refresh to see changes</p>
+        <p className="mt-0.5 text-xs italic text-white/45 font-robotoCondensed">Give it a few seconds then refresh to see changes</p>
         </>
     )
 };

@@ -59,7 +59,7 @@ const ChapterList = ({mangaUID}) => {
     return(
         <>
             <div className="hidden md:block">
-                <button className="px-1 w-12 bg-gray-800 hover:bg-gray-600 rounded capitalize" onClick={()=>toggleOrder()}>{order}</button>
+                <button className="px-1 w-12 bg-gray-800 hover:bg-gray-600 rounded-sm capitalize" onClick={()=>toggleOrder()}>{order}</button>
             </div>
 
             <ol className="w-full md:w-3/5 mr-3">
