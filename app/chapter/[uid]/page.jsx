@@ -7,6 +7,7 @@ import { getChapterNumber, getMangaUID } from "@/utils/dataManipulation/chapter"
 import Navbar from "@/components/navbarComps/navbar/navbar";
 import { useEffect, useState } from "react";
 import { LANGPREFS } from "@/utils/enums";
+import { useReaderMenu } from "@/components/chapterReaderComps/readerMenuProvider";
 
 
 
@@ -16,11 +17,11 @@ import { LANGPREFS } from "@/utils/enums";
  * @returns The function `chapterOffsetClamp` returns the offset value calculated based on the input
  * chapter number.
  */
-// const chapterOffsetClamp = (chapNumber) => {
-//     const number = Number(chapNumber);
-//     const offset = Math.floor(number / 100) * 100;
-//     return offset;
-// }
+const chapterOffsetClamp = (chapNumber) => {
+    const number = Number(chapNumber);
+    const offset = Math.floor(number / 100) * 100;
+    return offset;
+}
 
 
 const Reader = () => {
@@ -38,7 +39,7 @@ const Reader = () => {
     
     /// page control/ui slice
     const [ hideSpinner, setHideSpinner ] = useState(false);
-    const [ showMenu, setShowMenu ] = useState(true);
+    const {showMenu, showMenuPreview, toggleMenu} = useReaderMenu();
     const [ idx, setIdx ] = useState(0);
 
     
@@ -181,12 +182,29 @@ const Reader = () => {
         let pageCount = imageData.chapter.data.length;
 
         for (let i = 0; i < pageCount; i++) {
+            const isCurrentPage = Number(idx) === i;
+            const tileColor = isCurrentPage ? 'bg-rose-500' : (
+                Number(idx) >= i ? 'bg-rose-700' : 'bg-rose-700/40'
+            );
+
             tiles.push(
                 <li
                     key={i}
-                    className={`h-3 w-full bg-rose-500 mx-1 rounded-sm cursor-pointer ${idx >= i ? '' : 'opacity-40'} ${idx === i ? '' : 'bg-rose-700'}`}
-                    onClick={() => {goToPage(i)}}
-                />
+                    className="h-full min-w-0 flex-1 group-hover:min-w-8 group-focus-within:min-w-8"
+                >
+                    <button
+                        type="button"
+                        onClick={() => goToPage(i)}
+                        aria-label={`Go to page ${i + 1}`}
+                        aria-current={isCurrentPage ? 'page' : undefined}
+                        title={`Page ${i + 1}`}
+                        className={`h-full w-full rounded-sm text-white font-robotoCondensed text-sm transition-colors hover:bg-rose-400 focus-visible:bg-rose-400 focus-visible:outline-2 focus-visible:outline-emerald-400 focus-visible:-outline-offset-2 ${tileColor}`}
+                    >
+                        <span className="opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity motion-reduce:transition-none">
+                            {i + 1}
+                        </span>
+                    </button>
+                </li>
             )
         }
 
@@ -201,15 +219,26 @@ const Reader = () => {
             <div id="rdr" className="w-full h-screen flex flex-col items-center">
                 <div className="absolute w-full flex justify-between">
                     <div className={`${showMenu ? '' : 'opacity-0'} transition-opacity duration-500 h-screen w-1/3 flex items-center justify-center text-5xl select-none`} onClick={nextPage(-1)}>&lt;</div>
-                    <div className="h-screen w-1/3 cursor-pointer" onClick={() => {setShowMenu(val => !val)}}/>
+                    <div
+                        className="h-screen w-1/3 cursor-pointer"
+                        onClick={toggleMenu}
+                    />
                     <div className={`${showMenu ? '' : 'opacity-0'} transition-opacity duration-500 h-screen w-1/3 flex items-center justify-center text-5xl select-none`} onClick={nextPage(1)}>&gt;</div>
                 </div>
 
-                <ol className={`bg-slate-800 w-screen h-4 fixed bottom-0 transition-opacity duration-500 ${showMenu ? '' : 'opacity-0'} flex justify-around items-center`}>
-                    {
-                        (imageData !== null) ? genPageIdxTiles() : ''
-                    }
-                </ol>
+                <div
+                    inert={!showMenu}
+                    className={`group fixed bottom-0 left-0 z-10 w-full h-20 flex items-end transition-opacity duration-300 motion-reduce:transition-none ${showMenu ? '' : 'opacity-0 pointer-events-none'}`}
+                >
+                    <ol
+                        aria-label="Chapter pages"
+                        className="bg-slate-800 w-full h-4 p-0.5 flex gap-1 overflow-x-auto overflow-y-hidden group-hover:h-13 group-hover:pb-3 group-focus-within:h-12 transition-[height] duration-300 ease-out motion-reduce:transition-none"
+                    >
+                        {
+                            (imageData !== null) ? genPageIdxTiles() : ''
+                        }
+                    </ol>
+                </div>
 
                 {
                     <img
@@ -217,7 +246,10 @@ const Reader = () => {
                         width="1000"
                         height="1500"
                         className="h-screen w-auto"
-                        onLoad={() => {setHideSpinner(true)}}
+                        onLoad={() => {
+                            setHideSpinner(true);
+                            showMenuPreview();
+                        }}
                     />
                 } 
                 <div className={`${hideSpinner ? 'hidden' : ''} flex absolute h-full items-center justify-center`}><LoadingSpinner/></div>                
