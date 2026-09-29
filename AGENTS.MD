@@ -151,6 +151,15 @@ The generated section below is specific to this Next.js project. When copying
 these preferences to a different stack, copy the sections above and keep that
 project's own framework instructions.
 
+## MangaDex API reference (project-specific)
+
+- Manga documentation: https://api.mangadex.org/docs/03-manga/
+- API schema: https://api.mangadex.org/docs/swagger.html
+- Manga titles are localized maps. Do not assume `attributes.title.en` exists.
+  Use the shared `getENTitle` helper, which checks English primary and alternate
+  titles before falling back to other available titles. Use it for expanded
+  manga relationships in chapter responses as well as standalone manga data.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know

@@ -35,15 +35,7 @@ export const getCoverUrl = (mangaData) => {
     return `https://mangadex.org/covers/${mangaData.id}/${coverFileName}`;
 };
 
-/**
- * Retrieves the English title for a manga.
- *
- * @param {object} mangaData The manga data object.
- * @returns {string} The English title.
- */
-export const getENTitle = (mangaData) => {
-    return mangaData.attributes.title.en;
-};
+export { getENTitle } from './mangaTitle.mjs';
 
 /**
  * Retrieves the description for a manga.
