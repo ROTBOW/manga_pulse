@@ -1,6 +1,7 @@
 'use client'
 
 import ChapterDetailsBar from "@/components/chapterReaderComps/chapterDetailsBar/chapterDetailsBar";
+import ChapterImage from "@/components/chapterReaderComps/chapterImage";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import LoadingSpinner from "@/components/loadingSpinner/loadingSpinner";
 import { getChapterNumber, getMangaUID } from "@/utils/dataManipulation/chapter";
@@ -276,12 +277,12 @@ const Reader = () => {
 
                 {readerError && <p role="alert">{readerError}</p>}
                 {pages[idx] && chapterData?.id === params.uid && (
-                    <img
+                    <ChapterImage
                         key={`${params.uid}:${idx}:${pages[idx]}`}
                         src={pages[idx]}
-                        width="1000"
-                        height="1500"
-                        className="h-screen w-auto"
+                        chapterId={params.uid}
+                        pageNumber={Number(idx) + 1}
+                        onError={() => setHideSpinner(true)}
                         onLoad={() => {
                             setHideSpinner(true);
                             showMenuPreview();

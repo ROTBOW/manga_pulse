@@ -264,7 +264,12 @@ export const getLatestChapters = async (contentPref=['safe', 'suggestive'], lang
  * @returns {Promise<object>} A promise that resolves with the chapter page data, including URLs for each page.
  */
 export const getChapterPages = async (UID) => {
-    const res = await limitedFetch(`https://api.mangadex.org/at-home/server/${UID}`);
+    const res = await limitedFetch(`https://api.mangadex.org/at-home/server/${UID}`, 0);
+
+    if (!res.ok) {
+        throw new Error(`Could not load chapter image metadata (${res.status}).`);
+    }
+
     return await res.json();
 }
 

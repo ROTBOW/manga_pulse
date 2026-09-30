@@ -10,8 +10,11 @@ export const GET = async (req, { params }) => {
         const response = await getChapterPages(uid);
         
         return new Response(JSON.stringify(response), {
-            status: response.status,
-            headers: { 'Content-Type': 'application/json' }
+            status: 200,
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-store'
+            }
 
         });
 
