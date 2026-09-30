@@ -63,12 +63,20 @@ const Navbar = ({displayType}) => {
                 {/* ^ has opacity-0 class - need to remove that later */}
 
                 <div className={`p-1 rounded-full ${showBg ? 'bg-gray-700' : ''}`}>
-                    <Image
-                        src={profileIcon}
-                        alt="profile icon"
-                        className='w-10 rounded-full cursor-pointer'
-                        onClick={() => {setShowProfileModal(true)}}
-                    />
+                    <button
+                        type="button"
+                        onClick={() => setShowProfileModal(true)}
+                        aria-label="Open profile menu"
+                        aria-haspopup="dialog"
+                        aria-expanded={showProfileModal}
+                        className="block rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400"
+                    >
+                        <Image
+                            src={profileIcon}
+                            alt=""
+                            className="w-10 rounded-full"
+                        />
+                    </button>
                     {
                         showProfileModal ? 
                             <ProfileModal hideModal={setShowProfileModal} /> :
